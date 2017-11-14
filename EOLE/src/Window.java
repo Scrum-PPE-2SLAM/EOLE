@@ -184,6 +184,8 @@ public class Window extends JFrame {
 		reinitContentPane();
 		AjoutRegate ajoutRegate = new AjoutRegate(this);
 		ajoutRegate.creationPanelAjoutRegate();
+		ajoutRegate.creationPanelTableau();
+		ajoutRegate.creationPanelTitre();
 		contentPane.revalidate();
 	}
 	
