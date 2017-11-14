@@ -159,7 +159,7 @@ public class LancementRegate extends JFrame {
 		this.panelTableParticipant.setLayout(null);
 		
 		scrollPane = new JScrollPane();
-		this.scrollPane.setBounds(10, 29, 350, 357);
+		this.scrollPane.setBounds(10, 20, 350, 383);
 		this.panelTableParticipant.add(scrollPane);
 		
 		this.tableParticipants = new JTable(20,5);
@@ -168,26 +168,26 @@ public class LancementRegate extends JFrame {
 		this.tableParticipants.setFillsViewportHeight(true);
 		this.tableParticipants.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, "Arrivée", "Abandon", null, null},
-				{null, "Arrivée", "Abandon", null, null},
-				{null, "Arrivée", "Abandon", null, null},
-				{null, "Arrivée", "Abandon", null, null},
-				{null, "Arrivée", "Abandon", null, null},
-				{null, "Arrivée", "Abandon", null, null},
-				{null, "Arrivée", "Abandon", null, null},
-				{null, "Arrivée", "Abandon", null, null},
-				{null, "Arrivée", "Abandon", null, null},
-				{null, "Arrivée", "Abandon", null, null},
-				{null, "Arrivée", "Abandon", null, null},
-				{null, "Arrivée", "Abandon", null, null},
-				{null, "Arrivée", "Abandon", null, null},
-				{null, "Arrivée", "Abandon", null, null},
-				{null, "Arrivée", "Abandon", null, null},
-				{null, "Arrivée", "Abandon", null, null},
-				{null, "Arrivée", "Abandon", null, null},
-				{null, "Arrivée", "Abandon", null, null},
-				{null, "Arrivée", "Abandon", null, null},
-				{null, "Arrivée", "Abandon", null, null},
+				{null, "✔", "✘", null, null},
+				{null, "✔", "✘", null, null},
+				{null, "✔", "✘", null, null},
+				{null, "✔", "✘", null, null},
+				{null, "✔", "✘", null, null},
+				{null, "✔", "✘", null, null},
+				{null, "✔", "✘", null, null},
+				{null, "✔", "✘", null, null},
+				{null, "✔", "✘", null, null},
+				{null, "✔", "✘", null, null},
+				{null, "✔", "✘", null, null},
+				{null, "✔", "✘", null, null},
+				{null, "✔", "✘", null, null},
+				{null, "✔", "✘", null, null},
+				{null, "✔", "✘", null, null},
+				{null, "✔", "✘", null, null},
+				{null, "✔", "✘", null, null},
+				{null, "✔", "✘", null, null},
+				{null, "✔", "✘", null, null},
+				{null, "✔", "✘", null, null},
 				
 			},
 			new String[] {"Participant", "Arriv\u00E9e", "Abandon", "Temp r\u00E9el", "Temp compens\u00E9"}
@@ -209,10 +209,9 @@ public class LancementRegate extends JFrame {
 		tableParticipants.getColumn("Abandon").setCellEditor(
 		        new ButtonEditor(new JCheckBox(), this));
 		
-		this.tableParticipants.getColumnModel().getColumn(1).setPreferredWidth(50);
-		this.tableParticipants.getColumnModel().getColumn(2).setPreferredWidth(50);
-		this.tableParticipants.getColumnModel().getColumn(3).setPreferredWidth(70);
-		this.tableParticipants.getColumnModel().getColumn(4).setPreferredWidth(70);
+		this.tableParticipants.getColumnModel().getColumn(1).setPreferredWidth(45);
+		this.tableParticipants.getColumnModel().getColumn(2).setPreferredWidth(45);
+		this.tableParticipants.setRowHeight(18);
 	}
 	
 	public void setChrono(int timeCount) {
@@ -220,16 +219,18 @@ public class LancementRegate extends JFrame {
 		
 	}
 	
-	public void setTime() {
-		Boolean arrivee = true;
+	public void setTime(boolean arrivee) {
 		int ligne = tableParticipants.getSelectedRow();
-	    	if ((chrono.isRunning()) && (tableParticipants.getValueAt(ligne, 3) == null)) {
-	           tableParticipants.setValueAt(df.format(chrono.getTime() - 3.6 * Math.pow(10,6)), ligne, 3);
-	    	}else if  (tableParticipants.getValueAt(ligne, 3) != null){
-	    	  JOptionPane.showMessageDialog(null, "Ce participant est déjà arrivé", "Erreur", JOptionPane.ERROR_MESSAGE);
-	    	}else if  (!chrono.isRunning()){
-	    	  JOptionPane.showMessageDialog(null, "Le chronomètre n'est pas lancé", "Erreur", JOptionPane.ERROR_MESSAGE);
-	      
-	}
-	}
+			if ((chrono.isRunning()) && (tableParticipants.getValueAt(ligne, 3) == null)) {
+				if (arrivee == true) {
+					tableParticipants.setValueAt(df.format(chrono.getTime() - 3.6 * Math.pow(10,6)), ligne, 3);
+				}else {
+					tableParticipants.setValueAt("NC", ligne, 3);
+				}
+				}else if  (tableParticipants.getValueAt(ligne, 3) != null){
+					JOptionPane.showMessageDialog(null, "Ce participant est déjà arrivé ou a abandoné", "Erreur", JOptionPane.ERROR_MESSAGE);
+				}else if  (!chrono.isRunning()){
+					JOptionPane.showMessageDialog(null, "Le chronomètre n'est pas lancé", "Erreur", JOptionPane.ERROR_MESSAGE);
+				}
+			}
 }

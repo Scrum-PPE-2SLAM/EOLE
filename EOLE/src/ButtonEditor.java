@@ -51,12 +51,11 @@ protected JButton button;
 
   public Object getCellEditorValue() {
     if (isPushed) {
-      // 
-      // 
-    	lr.setTime();
-   // int ligne = lr..getSelectedRow();
-      //JOptionPane.showMessageDialog(button, label + ": Ouch!");
-      // System.out.println(label + ": Ouch!");
+    	if (label == "✔") {
+    		lr.setTime(true);
+    	}else {
+    		lr.setTime(false);
+    	}
     }
     isPushed = false;
     return new String(label);
