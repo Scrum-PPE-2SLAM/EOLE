@@ -86,6 +86,11 @@ public class Window extends JFrame {
 		menuBar.add(mnParticipants);
 		
 		JMenuItem mntmAjouterParticipant = new JMenuItem("Ajouter participant");
+		mntmAjouterParticipant.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				AjouterParticipant();
+			}
+		});
 		mnParticipants.add(mntmAjouterParticipant);
 		
 		JMenuItem mntmModifierParticipant = new JMenuItem("Modifier participant");
@@ -179,6 +184,13 @@ public class Window extends JFrame {
 		reinitContentPane();
 		AjoutRegate ajoutRegate = new AjoutRegate(this);
 		ajoutRegate.creationPanelAjoutRegate();
+		contentPane.revalidate();
+	}
+	
+	public void AjouterParticipant(){
+		reinitContentPane();
+		AjoutParticipant nouveauParticipant = new AjoutParticipant(this);
+		nouveauParticipant.createNouveauParticipant();
 		contentPane.revalidate();
 	}
 
