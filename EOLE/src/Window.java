@@ -56,6 +56,11 @@ public class Window extends JFrame {
 		menuBar.add(mnRgate);
 		
 		JMenuItem mntmNouvelleRgate = new JMenuItem("Nouvelle régate");
+		mntmNouvelleRgate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ajoutRegate();
+			}
+		});
 		mnRgate.add(mntmNouvelleRgate);
 		
 		JMenuItem mntmModifierRgate = new JMenuItem("Modifier régate");
@@ -168,6 +173,13 @@ public class Window extends JFrame {
 	}
 	public String[] getListeType(){
 		return listeType;
+	}
+	
+	public void ajoutRegate() {
+		reinitContentPane();
+		AjoutRegate ajoutRegate = new AjoutRegate(this);
+		ajoutRegate.creationPanelAjoutRegate();
+		contentPane.revalidate();
 	}
 
 }

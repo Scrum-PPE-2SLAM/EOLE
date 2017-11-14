@@ -1,7 +1,3 @@
-import java.text.SimpleDateFormat;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -10,7 +6,7 @@ import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
 
-public class AjoutParticipant extends JFrame {
+public class AjoutRegate extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	private JPanel panelInfoRegate;
@@ -19,14 +15,14 @@ public class AjoutParticipant extends JFrame {
 	private JDateChooser cboDate;
 	private Window window;
 
-	public AjoutParticipant(Window window) {
+	public AjoutRegate(Window window) {
 		this.window = window;
 	}
 	
-	public void creationPanelInfoRegate() {
+	public void creationPanelAjoutRegate() {
 		this.panelInfoRegate = new JPanel();
 		this.panelInfoRegate.setBorder(new TitledBorder(null, "R\u00E9gate", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		this.panelInfoRegate.setBounds(10, 79, 370, 234);
+		this.panelInfoRegate.setBounds(185, 117, 370, 234);
 		this.window.add(panelInfoRegate);
 		
 		this.lblNomRegate = new JLabel("Nom de la régate : ");
@@ -40,16 +36,12 @@ public class AjoutParticipant extends JFrame {
 		this.lblDistance = new JLabel("Distance : ");
 		this.lblDistance.setBounds(68, 165, 57, 43);
 		this.tfNomRegate = new JTextField(15); 
-		this.tfNomRegate.setEditable(false);
 		this.tfNomRegate.setBounds(135, 29, 185, 26);
 		this.tfLieuDepart = new JTextField(15);
-		this.tfLieuDepart.setEditable(false);
 		this.tfLieuDepart.setBounds(135, 100, 185, 26);
 		this.tfLieuArrivee = new JTextField(15);
-		this.tfLieuArrivee.setEditable(false);
 		this.tfLieuArrivee.setBounds(135, 138, 185, 26);
 		this.tfDistance = new JTextField(15);
-		this.tfDistance.setEditable(false);
 		this.tfDistance.setBounds(135, 173, 185, 26);
 		this.cboDate = new JDateChooser();
 		this.cboDate.setBounds(135, 64, 118, 26);
