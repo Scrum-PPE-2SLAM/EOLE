@@ -12,7 +12,8 @@ import com.toedter.calendar.JDateChooser;
 public class AjoutRegate extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
-	private JPanel panelInfoRegate, panelTableParticipant, panelTitreRegate;
+	private JPanel panelInfoRegate, panelTableParticipant;
+	JPanel panelTitreRegate;
 	private JLabel lblNomRegate, lblDate, lblLieuDepart, lblLieuArrivee, lblDistance, lblSelRegate;
 	private JTextField tfNomRegate, tfLieuDepart, tfLieuArrivee, tfDistance;
 	private JDateChooser cboDate;
@@ -25,7 +26,7 @@ public class AjoutRegate extends JFrame {
 	public void creationPanelAjoutRegate() {
 		this.panelInfoRegate = new JPanel();
 		this.panelInfoRegate.setBorder(new TitledBorder(null, "R\u00E9gate", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		this.panelInfoRegate.setBounds(10, 98, 370, 320);
+		this.panelInfoRegate.setBounds(10, 120, 370, 340);
 		this.window.add(panelInfoRegate);
 		
 		this.lblNomRegate = new JLabel("Nom de la régate : ");
@@ -66,18 +67,18 @@ public class AjoutRegate extends JFrame {
 		
 		this.panelTableParticipant = new JPanel();
 		this.panelTableParticipant.setBorder(new TitledBorder(null, "Participants", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		this.panelTableParticipant.setBounds(404, 98, 370, 320);
+		this.panelTableParticipant.setBounds(404, 120, 370, 340);
 		this.window.add(panelTableParticipant);
 		this.panelTableParticipant.setLayout(null);
 	}
 	
-	public void creationPanelTitre() {
+	public void creationPanelTitre(String titre) {
 		panelTitreRegate = new JPanel();
-		panelTitreRegate.setBounds(10, 11, 764, 57);
+		panelTitreRegate.setBounds(10, 11, 764, 119);
 		window.add(panelTitreRegate);
 		panelTitreRegate.setLayout(null);
 		
-		lblSelRegate = new JLabel("AJOUT NOUVELLE REGATE ");
+		lblSelRegate = new JLabel(titre);
 		lblSelRegate.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSelRegate.setFont(new Font("Tahoma", Font.BOLD, 40));
 		lblSelRegate.setBounds(10, 14, 744, 32);
