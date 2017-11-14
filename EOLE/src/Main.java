@@ -7,7 +7,6 @@ public class Main {
 		window.createWindow();
 		window.createMenu();
 		
-		
 		window.setVisible(true);
 		
 	}

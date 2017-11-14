@@ -16,6 +16,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.*;
 import java.awt.*;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 
@@ -28,7 +30,6 @@ public class Window extends JFrame {
 	private JPanel contentPane;
 	private String[] listeRegate;
 	private String[] listeType;
-
 
 	public Window(String name, int height, int length, String[] listeRegate, String[] listeType) {
 		this.name = name;
@@ -127,7 +128,12 @@ public class Window extends JFrame {
 		
 		JMenuItem mntmContact = new JMenuItem("Contact");
 		mnAide.add(mntmContact);
+		
+		
+		
+		
 	}
+	
 	
 	public void reinitContentPane() {
 		contentPane.removeAll();
