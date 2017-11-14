@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 
@@ -19,9 +18,11 @@ protected JButton button;
 
   private String label;
 
+  private LancementRegate lr;
+  
   private boolean isPushed;
 
-  public ButtonEditor(JCheckBox checkBox) {
+  public ButtonEditor(JCheckBox checkBox, LancementRegate lr) {
     super(checkBox);
     button = new JButton();
     button.setOpaque(true);
@@ -30,6 +31,7 @@ protected JButton button;
         fireEditingStopped();
       }
     });
+    this.lr = lr;
   }
 
   public Component getTableCellEditorComponent(JTable table, Object value,
@@ -51,7 +53,9 @@ protected JButton button;
     if (isPushed) {
       // 
       // 
-      JOptionPane.showMessageDialog(button, label + ": Ouch!");
+    	lr.setTime();
+   // int ligne = lr..getSelectedRow();
+      //JOptionPane.showMessageDialog(button, label + ": Ouch!");
       // System.out.println(label + ": Ouch!");
     }
     isPushed = false;

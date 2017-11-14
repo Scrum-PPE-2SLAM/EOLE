@@ -1,23 +1,11 @@
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableModel;
-import com.toedter.calendar.*;
-import java.awt.*;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 
 public class Window extends JFrame {
 

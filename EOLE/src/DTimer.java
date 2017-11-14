@@ -22,7 +22,7 @@ public class DTimer implements ActionListener{
 	}
 	
 	public int getTime (){	
-		return ( this.timeCount);
+		return ( this.timeCount * 1000); 
 	}
 	
 	public void reinitDTimer() {

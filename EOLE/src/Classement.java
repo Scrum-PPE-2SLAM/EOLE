@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class Classement extends JFrame {
 	
+	private static final long serialVersionUID = 1L;
 	private Window window;
 	private JPanel panelSelRegate;
 	private JLabel lblSelRegate;

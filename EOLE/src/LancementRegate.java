@@ -9,6 +9,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -33,6 +34,7 @@ public class LancementRegate extends JFrame {
 	private String[] listeRegate;
 	private JButton btnFin, btnReinit, btnDepart;
 	private JScrollPane scrollPane;
+	SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
 
 	public LancementRegate(Window window, String[] listeRegate) {
 		this.window = window;
@@ -166,7 +168,8 @@ public class LancementRegate extends JFrame {
 		this.tableParticipants.setFillsViewportHeight(true);
 		this.tableParticipants.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, "Arrivée", "Abandon", "00:00:00", "00:00:00"},
+				{null, "Arrivée", "Abandon", null, null},
+				{null, "Arrivée", "Abandon", null, null},
 				{null, "Arrivée", "Abandon", null, null},
 				{null, "Arrivée", "Abandon", null, null},
 				{null, "Arrivée", "Abandon", null, null},
@@ -192,7 +195,7 @@ public class LancementRegate extends JFrame {
 
 			private static final long serialVersionUID = 1L;
 			boolean[] columnEditables = new boolean[] {
-				false, false, false, true, true
+				false, true, true, false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -201,10 +204,10 @@ public class LancementRegate extends JFrame {
 		
 		tableParticipants.getColumn("Arriv\u00E9e").setCellRenderer(new ButtonRenderer());
 		tableParticipants.getColumn("Arriv\u00E9e").setCellEditor(
-		        new ButtonEditor(new JCheckBox()));
+		        new ButtonEditor(new JCheckBox(), this));
 		tableParticipants.getColumn("Abandon").setCellRenderer(new ButtonRenderer());
 		tableParticipants.getColumn("Abandon").setCellEditor(
-		        new ButtonEditor(new JCheckBox()));
+		        new ButtonEditor(new JCheckBox(), this));
 		
 		this.tableParticipants.getColumnModel().getColumn(1).setPreferredWidth(50);
 		this.tableParticipants.getColumnModel().getColumn(2).setPreferredWidth(50);
@@ -213,8 +216,20 @@ public class LancementRegate extends JFrame {
 	}
 	
 	public void setChrono(int timeCount) {
-		SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
 		this.lblChrono.setText(df.format(timeCount - 3.6 * Math.pow(10,6)));
 		
+	}
+	
+	public void setTime() {
+		Boolean arrivee = true;
+		int ligne = tableParticipants.getSelectedRow();
+	    	if ((chrono.isRunning()) && (tableParticipants.getValueAt(ligne, 3) == null)) {
+	           tableParticipants.setValueAt(df.format(chrono.getTime() - 3.6 * Math.pow(10,6)), ligne, 3);
+	    	}else if  (tableParticipants.getValueAt(ligne, 3) != null){
+	    	  JOptionPane.showMessageDialog(null, "Ce participant est déjà arrivé", "Erreur", JOptionPane.ERROR_MESSAGE);
+	    	}else if  (!chrono.isRunning()){
+	    	  JOptionPane.showMessageDialog(null, "Le chronomètre n'est pas lancé", "Erreur", JOptionPane.ERROR_MESSAGE);
+	      
+	}
 	}
 }
