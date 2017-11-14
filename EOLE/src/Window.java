@@ -64,6 +64,11 @@ public class Window extends JFrame {
 		mnRgate.add(mntmNouvelleRgate);
 		
 		JMenuItem mntmModifierRgate = new JMenuItem("Modifier régate");
+		mntmModifierRgate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				modifierRegate();
+			}
+		});
 		mnRgate.add(mntmModifierRgate);
 		
 		JMenuItem mntmSupprimerRgate = new JMenuItem("Supprimer régate");
@@ -185,6 +190,7 @@ public class Window extends JFrame {
 		AjoutRegate ajoutRegate = new AjoutRegate(this);
 		ajoutRegate.creationPanelAjoutRegate();
 		ajoutRegate.creationPanelTableau();
+		ajoutRegate.creationPanelTitre("AJOUT NOUVELLE REGATE ");
 		contentPane.revalidate();
 	}
 	public void ajouteAccueil(){
@@ -197,6 +203,13 @@ public class Window extends JFrame {
 		reinitContentPane();
 		AjoutParticipant nouveauParticipant = new AjoutParticipant(this);
 		nouveauParticipant.createNouveauParticipant();
+		contentPane.revalidate();
+	}
+	
+	public void modifierRegate() {
+		reinitContentPane();
+		ModifRegate modifRegate = new ModifRegate(this);
+		modifRegate.ajoutCombo(listeRegate);
 		contentPane.revalidate();
 	}
 
