@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
@@ -26,16 +27,20 @@ public class AjoutParticipant {
 		
 		
 		
-		this.panelTitle = new JPanel();
-		this.panelTitle.setBounds(200, 10, 100, 100);
-		this.window.add(panelTitle);
-		this.lblTitle = new JLabel("Ajout de participant");
-		this.lblTitle.setBounds(100, 20, 100, 40);
-		this.panelTitle.add(lblTitle);
+		panelTitle = new JPanel();
+		panelTitle.setBounds(10, 30, 764, 57);
+		window.add(panelTitle);
+		panelTitle.setLayout(null);
+		
+		lblTitle = new JLabel("AJOUT PARTICIPANT");
+		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 40));
+		lblTitle.setBounds(10, 14, 744, 32);
+		panelTitle.add(lblTitle);
 		
 		
 		this.panelNewParticipant = new JPanel();
-		this.panelNewParticipant.setBounds(200, 79, 400, 400);
+		this.panelNewParticipant.setBounds(200, 120, 400, 400);
 		this.window.add(panelNewParticipant);
 		
 		this.lblNomParticipant = new JLabel("Nom du participant: ");
