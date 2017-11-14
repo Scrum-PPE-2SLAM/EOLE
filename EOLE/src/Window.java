@@ -130,7 +130,7 @@ public class Window extends JFrame {
 		
 		
 	}
-	
+
 	
 	public void reinitContentPane() {
 		contentPane.removeAll();
@@ -188,7 +188,12 @@ public class Window extends JFrame {
 		ajoutRegate.creationPanelTitre();
 		contentPane.revalidate();
 	}
-	
+	public void ajouteAccueil(){
+		reinitContentPane();
+		Accueil accueil = new Accueil(this);
+		accueil.createAccueil();
+		contentPane.revalidate();
+	}
 	public void AjouterParticipant(){
 		reinitContentPane();
 		AjoutParticipant nouveauParticipant = new AjoutParticipant(this);

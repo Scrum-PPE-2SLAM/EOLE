@@ -5,7 +5,7 @@ public class Main {
 		Window window = new Window("Regate Manager 2017",800,600, maBdd.getListeRegate().toArray(new String[0]), maBdd.getListeType().toArray(new String[0]));
 		window.createWindow();
 		window.createMenu();
-		
+		window.ajouteAccueil();
 		window.setVisible(true);
 		
 	}
