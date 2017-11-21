@@ -1,5 +1,9 @@
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,6 +22,7 @@ public class AjoutRegate extends JFrame {
 	private JTextField tfNomRegate, tfLieuDepart, tfLieuArrivee, tfDistance;
 	private JDateChooser cboDate;
 	private Window window;
+	private JButton btnEnvoyer;
 
 	public AjoutRegate(Window window) {
 		this.window = window;
@@ -39,6 +44,7 @@ public class AjoutRegate extends JFrame {
 		this.lblLieuArrivee.setBounds(40, 190, 94, 43);
 		this.lblDistance = new JLabel("Distance : ");
 		this.lblDistance.setBounds(68, 230, 77, 43);
+		
 		this.tfNomRegate = new JTextField(15); 
 		this.tfNomRegate.setBounds(145, 80, 185, 26);
 		this.tfLieuDepart = new JTextField(15);
@@ -51,6 +57,24 @@ public class AjoutRegate extends JFrame {
 		this.cboDate.setBounds(145, 120, 118, 26);
 		this.panelInfoRegate.setLayout(null);
 		
+		this.btnEnvoyer = new JButton("Enregistrer");
+		this.btnEnvoyer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			try {
+				
+					Bdd maBdd = new Bdd();
+					maBdd.reqAjoutRegate(tfNomRegate.getText(), cboDate.getDateFormatString() , tfLieuDepart.getText(), tfLieuArrivee.getText() , Integer.parseInt(tfDistance.getText()));
+
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}		
+			}
+		});
+		this.btnEnvoyer.setFont(new Font("Tahoma", Font.BOLD, 12));
+		this.btnEnvoyer.setBounds(150, 290, 120, 20);
+		this.panelInfoRegate.add(btnEnvoyer);
+		
 		this.panelInfoRegate.add(lblNomRegate);
 		this.panelInfoRegate.add(tfNomRegate);
 		this.panelInfoRegate.add(lblDate);
@@ -61,6 +85,8 @@ public class AjoutRegate extends JFrame {
 		this.panelInfoRegate.add(tfLieuArrivee);
 		this.panelInfoRegate.add(lblDistance);
 		this.panelInfoRegate.add(tfDistance);
+		
+		
 	}
 	
 	public void creationPanelTableau() {

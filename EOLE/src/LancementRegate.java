@@ -41,6 +41,13 @@ public class LancementRegate extends JFrame {
 		this.listeRegate = listeRegate;
 	}
 	
+	public void createAll(){
+		creationPanelSelRegate();
+		creationPanelInfoRegate();
+		creationPanelChrono();
+		creationPanelTableau();
+	}
+	
 	public void creationPanelSelRegate() {
 		
 		this.panelSelRegate = new JPanel();

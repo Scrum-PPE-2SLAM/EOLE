@@ -1,6 +1,7 @@
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -75,20 +76,30 @@ public class AjoutParticipant extends JFrame{
 		this.tfCategorieVoilier.setEditable(true);
 		this.tfCategorieVoilier.setBounds(135, 138, 185, 26);
 		
+		this.tfRating = new JTextField(15);
+		this.tfRating.setEditable(true);
+		this.tfRating.setBounds(135, 173, 185, 26);
+		this.panelNewParticipant.setLayout(null);
+		
 		this.btnEnvoyer = new JButton("Enregistrer");
 		this.btnEnvoyer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("ecrire l'enregistrement ici");
+			try {
+				
+					Bdd maBdd = new Bdd();
+					maBdd.reqAjoutParticipant(tfNomParticipant.getText(), tfPrenomParticipant.getText() , tfNomDuVoilier.getText(), tfCategorieVoilier.getText() , Integer.parseInt(tfRating.getText()));
+
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}		
 			}
 		});
 		this.btnEnvoyer.setFont(new Font("Tahoma", Font.BOLD, 12));
 		this.btnEnvoyer.setBounds(150, 220, 120, 20);
 		this.panelNewParticipant.add(btnEnvoyer);
 		
-		this.tfRating = new JTextField(15);
-		this.tfRating.setEditable(true);
-		this.tfRating.setBounds(135, 173, 185, 26);
-		this.panelNewParticipant.setLayout(null);
+		
 		
 		this.panelNewParticipant.add(lblNomParticipant);
 		this.panelNewParticipant.add(tfNomParticipant);

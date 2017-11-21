@@ -147,10 +147,7 @@ public class Window extends JFrame {
 	public void lancementRegate() {
 		reinitContentPane();
 		LancementRegate lancementRegate = new LancementRegate(this, listeRegate);
-		lancementRegate.creationPanelSelRegate();
-		lancementRegate.creationPanelInfoRegate();
-		lancementRegate.creationPanelChrono();
-		lancementRegate.creationPanelTableau();
+		lancementRegate.createAll();
 		contentPane.revalidate();
 	}
 	
