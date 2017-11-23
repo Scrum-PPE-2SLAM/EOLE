@@ -17,13 +17,15 @@ public class Window extends JFrame {
 	private JPanel contentPane;
 	private String[] listeRegate;
 	private String[] listeType;
+	private Bdd maBdd;
 
-	public Window(String name, int height, int length, String[] listeRegate, String[] listeType) {
+	public Window(String name, int height, int length, String[] listeRegate, String[] listeType, Bdd maBdd ) {
 		this.name = name;
 		this.height = height;
 		this.length = length;
 		this.listeRegate = listeRegate;
 		this.listeType = listeType;
+		this.maBdd = maBdd;
 	}
 		
 	public void createWindow() {
@@ -184,7 +186,7 @@ public class Window extends JFrame {
 	
 	public void ajoutRegate() {
 		reinitContentPane();
-		AjoutRegate ajoutRegate = new AjoutRegate(this);
+		AjoutRegate ajoutRegate = new AjoutRegate(this, maBdd);
 		ajoutRegate.creationPanelAjoutRegate();
 		ajoutRegate.creationPanelTableau();
 		ajoutRegate.creationPanelTitre("AJOUT NOUVELLE REGATE ");
@@ -198,14 +200,14 @@ public class Window extends JFrame {
 	}
 	public void AjouterParticipant(){
 		reinitContentPane();
-		AjoutParticipant nouveauParticipant = new AjoutParticipant(this);
+		AjoutParticipant nouveauParticipant = new AjoutParticipant(this, maBdd);
 		nouveauParticipant.createNouveauParticipant();
 		contentPane.revalidate();
 	}
 	
 	public void modifierRegate() {
 		reinitContentPane();
-		ModifRegate modifRegate = new ModifRegate(this);
+		ModifRegate modifRegate = new ModifRegate(this, maBdd);
 		modifRegate.ajoutCombo(listeRegate);
 		contentPane.revalidate();
 	}

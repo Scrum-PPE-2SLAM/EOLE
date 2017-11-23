@@ -23,9 +23,11 @@ public class AjoutRegate extends JFrame {
 	private JDateChooser cboDate;
 	private Window window;
 	private JButton btnEnvoyer;
+	private Bdd maBdd;
 
-	public AjoutRegate(Window window) {
+	public AjoutRegate(Window window, Bdd maBdd) {
 		this.window = window;
+		this.maBdd = maBdd;
 	}
 	
 	public void creationPanelAjoutRegate() {
@@ -61,8 +63,6 @@ public class AjoutRegate extends JFrame {
 		this.btnEnvoyer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			try {
-				
-					Bdd maBdd = new Bdd();
 					maBdd.reqAjoutRegate(tfNomRegate.getText(), cboDate.getDateFormatString() , tfLieuDepart.getText(), tfLieuArrivee.getText() , Integer.parseInt(tfDistance.getText()));
 
 			} catch (SQLException e1) {

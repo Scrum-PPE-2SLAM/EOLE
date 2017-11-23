@@ -10,10 +10,10 @@ public class ModifRegate extends JFrame {
 	private JComboBox<String> cboSelRegate;
 	private AjoutRegate ajoutRegate;
 	
-	public ModifRegate(Window window) {
+	public ModifRegate(Window window, Bdd maBdd) {
 		this.window = window;
 		
-		ajoutRegate = new AjoutRegate(window);
+		ajoutRegate = new AjoutRegate(window, maBdd);
 		ajoutRegate.creationPanelAjoutRegate();
 		ajoutRegate.creationPanelTableau();
 		ajoutRegate.creationPanelTitre("MODIFICATION REGATE");

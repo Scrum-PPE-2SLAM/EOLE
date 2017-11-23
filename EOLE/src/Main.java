@@ -5,7 +5,7 @@ public class Main {
 		Bdd maBdd = new Bdd();
 		maBdd.initialisation();
 		
-		Window window = new Window("Regate Manager 2017",800,600, maBdd.getlisteRegate().toArray(new String[0]), maBdd.getListeType().toArray(new String[0]));
+		Window window = new Window("Regate Manager 2017",800,600, maBdd.getlisteRegate().toArray(new String[0]), maBdd.getListeType().toArray(new String[0]), maBdd);
 		window.createWindow();
 		window.createMenu();
 		window.ajouteAccueil();

@@ -13,7 +13,6 @@ public class Bdd {
 	private static Statement st;
 	private static ResultSet rs;
 	private static int res;
-	private static int id=8;
 	
 	
 	
@@ -35,7 +34,7 @@ public class Bdd {
 	}
 
 	public void initialisation() throws SQLException{
-		String sql = "SELECT * FROM participants";
+		String sql = "SELECT * FROM participant";
 		rs = st.executeQuery(sql);
 		listeParticipant = new ArrayList<String>();
 		
@@ -43,7 +42,7 @@ public class Bdd {
 			listeParticipant.add(rs.getString(2));
 		}
 		
-		String sql2 = "SELECT * FROM Regate";
+		String sql2 = "SELECT * FROM regate";
 		rs = st.executeQuery(sql2);
 		listeRegate = new ArrayList<String>();
 		
@@ -51,6 +50,36 @@ public class Bdd {
 			listeRegate.add(rs.getString(1));
 		}
 		deconnexion();
+		System.out.println("reg " + listeRegate.size() + "; participants :" + listeParticipant.size());
+		
+		
+	}
+	
+	public void miseAJour(){
+		try {
+			String sql = "SELECT * FROM participant";
+			rs = st.executeQuery(sql);
+			
+			/////// fonction remove
+			
+			while(rs.next()){
+				
+				listeParticipant.add(rs.getString(2));
+			}
+			
+			String sql2 = "SELECT * FROM regate";
+			rs = st.executeQuery(sql2);
+			
+			while (rs.next()){
+				listeRegate.add(rs.getString(1));
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 		
@@ -66,8 +95,11 @@ public class Bdd {
 	}
 		
 	public void reqAjoutParticipant(String nomParticipant, String prenomParticipant, String nomBateau, String typeBateau, int rating ) throws SQLException{
+		Connexion();
+		System.out.println(listeParticipant.size());
+		int id = listeParticipant.size();
 		try{
-		     PreparedStatement prepare = con.prepareStatement("INSERT INTO `eole`.`participants` (`ID`, `nomParticipant`, `prenomParticipant`, `nomVoilier`, `categorieBateau`, `rating`)VALUES (?, ?, ?, ?, ?, ?); ");
+		     PreparedStatement prepare = con.prepareStatement("INSERT INTO `eole`.`participant` (`ID_PARTICIPANT`, `NOM_PARTICIPANT`, `PRENOM_PARTICIPANT`, `NOM_VOILIER`, `CATEGORIE_VOILIER`, `RATING`)VALUES (?, ?, ?, ?, ?, ?); ");
 		     prepare.setInt (1, id);
 		     prepare.setString (2, nomParticipant);
 		     prepare.setString (3, prenomParticipant);
@@ -82,24 +114,27 @@ public class Bdd {
 		} catch (Exception e){
 			e.printStackTrace();
 		}
-
-		initialisation();
+		
+		miseAJour();
 		deconnexion();
 	}
 	
 	public void reqAjoutRegate(String nomRegate, String dateRegate, String lieuDepart, String lieuArrive, int distance ) throws SQLException{
+		
+		Connexion();
 		 PreparedStatement prepare;
 		 try {
-			 prepare = con.prepareStatement("INSERT INTO `eole`.`regate` (`nomRegate`, `date`, `lieuDepart`, `lieuArrivé`, `distance`)VALUES (?, ?, ?, ?, ?); ");
-			 prepare.setString (1, nomRegate);
-		     prepare.setString (2, dateRegate);
-		     prepare.setString (3, lieuDepart);
-		     prepare.setString (4, lieuArrive);
-		     prepare.setInt(5, distance);
+			 prepare = con.prepareStatement("INSERT INTO `eole`.`regate` (`ID_REGATE`, `NOM_REGATE`, `LIEU_DEPART`, `LIEU_ARRIVEE`, `DISTANCE`)VALUES (?, ?, ?, ?, ?, ?); ");
+			 prepare.setInt(1, 1);
+			 prepare.setString (2, nomRegate);
+		     prepare.setString (3, dateRegate);
+		     prepare.setString (4, lieuDepart);
+		     prepare.setString (5, lieuArrive);
+		     prepare.setInt(6, distance);
 		 
 		     prepare.executeUpdate();
 		     
-		     System.out.println("requête envoyé correctement");
+		     System.out.println("requ�te envoy� correctement");
 		     
 		 } catch (SQLException e) {
 			// TODO Auto-generated catch block
