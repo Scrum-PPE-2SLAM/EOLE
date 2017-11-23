@@ -3,6 +3,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -15,11 +16,12 @@ public class Window extends JFrame {
 	private int height;
 	private int length;
 	private JPanel contentPane;
-	private String[] listeRegate;
-	private String[] listeType;
+	private ArrayList<String> listeRegate;
+	private ArrayList<String> listeType;
+	private ArrayList<String> listeParticipant;
 	private Bdd maBdd;
 
-	public Window(String name, int height, int length, String[] listeRegate, String[] listeType, Bdd maBdd ) {
+	public Window(String name, int height, int length, ArrayList<String> listeRegate, ArrayList<String> listeParticipant, ArrayList<String> listeType, Bdd maBdd ) {
 		this.name = name;
 		this.height = height;
 		this.length = length;
@@ -148,7 +150,7 @@ public class Window extends JFrame {
 	
 	public void lancementRegate() {
 		reinitContentPane();
-		LancementRegate lancementRegate = new LancementRegate(this, listeRegate);
+		LancementRegate lancementRegate = new LancementRegate(this, maBdd);
 		lancementRegate.createAll();
 		contentPane.revalidate();
 	}
@@ -171,17 +173,20 @@ public class Window extends JFrame {
 	
 	public void lancementRegate2() {
 		reinitContentPane();
-		LancementRegate lancementRegate = new LancementRegate(this, listeRegate);
+		LancementRegate lancementRegate = new LancementRegate(this, maBdd);
 		lancementRegate.creationPanelSelRegate();
 		lancementRegate.creationPanelInfoRegate();
 		contentPane.revalidate();
 	}
 	
-	public String[] getListeRegate(){
+	public ArrayList<String> getListeRegate(){
 		return listeRegate;
 	}
-	public String[] getListeType(){
+	public ArrayList<String> getListeType(){
 		return listeType;
+	}
+	public ArrayList<String> getListeParticipant(){
+		return listeParticipant;
 	}
 	
 	public void ajoutRegate() {
@@ -208,7 +213,7 @@ public class Window extends JFrame {
 	public void modifierRegate() {
 		reinitContentPane();
 		ModifRegate modifRegate = new ModifRegate(this, maBdd);
-		modifRegate.ajoutCombo(listeRegate);
+		modifRegate.ajoutCombo(listeRegate.toArray(new String[0]));
 		contentPane.revalidate();
 	}
 

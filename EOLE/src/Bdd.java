@@ -3,9 +3,13 @@ import java.sql.*;
 
 
 public class Bdd {
-	ArrayList<String> listeParticipant = new ArrayList<String>();;
-	ArrayList<String> listeRegate = new ArrayList<String>();;
-	ArrayList<String> listeType= new ArrayList<String>();;
+	ArrayList<String> listeParticipant = new ArrayList<String>();
+	ArrayList<String> listeRegate = new ArrayList<String>();
+	ArrayList<String> listeType= new ArrayList<String>();
+	ArrayList<String> listeDateRegate= new ArrayList<String>();
+	ArrayList<String> listeLieuDepart= new ArrayList<String>();
+	ArrayList<String> listeLieuArrivee= new ArrayList<String>();
+	ArrayList<Integer> listeDistance= new ArrayList<Integer>();
 	private static String url ="jdbc:mysql://localhost:3306/eole";
 	private static String user ="root";
 	private static String password = "";
@@ -13,6 +17,7 @@ public class Bdd {
 	private static Statement st;
 	private static ResultSet rs;
 	private static int res;
+	
 	
 	
 	
@@ -37,7 +42,6 @@ public class Bdd {
 		String sql = "SELECT * FROM participant";
 		rs = st.executeQuery(sql);
 		listeParticipant = new ArrayList<String>();
-		
 		while (rs.next()){
 			listeParticipant.add(rs.getString(2));
 		}
@@ -47,31 +51,50 @@ public class Bdd {
 		listeRegate = new ArrayList<String>();
 		
 		while (rs.next()){
-			listeRegate.add(rs.getString(1));
+			listeRegate.add(rs.getString(2));
+			listeDateRegate.add(rs.getString(3));
+			listeLieuDepart.add(rs.getString(4));
+			listeLieuArrivee.add(rs.getString(5));
+			listeDistance.add(rs.getInt(6)); 
 		}
 		deconnexion();
-		System.out.println("reg " + listeRegate.size() + "; participants :" + listeParticipant.size());
+		System.out.println("regates : " + listeRegate.size() + "; participants : " + listeParticipant.size());
 		
 		
 	}
 	
 	public void miseAJour(){
+		
 		try {
+			
 			String sql = "SELECT * FROM participant";
 			rs = st.executeQuery(sql);
-			
-			/////// fonction remove
 			
 			while(rs.next()){
 				
 				listeParticipant.add(rs.getString(2));
 			}
 			
+			/////// fonction remove
+			remove(listeParticipant);
+			remove(listeRegate);
+			remove(listeDateRegate);
+			remove(listeLieuDepart);
+			remove(listeLieuArrivee);
+			remove(listeDistance);
+			
+			
+			
 			String sql2 = "SELECT * FROM regate";
 			rs = st.executeQuery(sql2);
 			
 			while (rs.next()){
-				listeRegate.add(rs.getString(1));
+				
+				listeRegate.add(rs.getString(2));
+				listeDateRegate.add(rs.getString(3));
+				listeLieuDepart.add(rs.getString(4));
+				listeLieuArrivee.add(rs.getString(5));
+				listeDistance.add(rs.getInt(6)); 
 			}
 			
 		} catch (SQLException e) {
@@ -82,6 +105,12 @@ public class Bdd {
 		
 	}
 	
+	public void remove(ArrayList maListe){
+		while (maListe.size() > 0){
+			maListe.remove(0);
+		}
+		
+	}
 		
 	public void deconnexion(){
 		try {
@@ -96,7 +125,6 @@ public class Bdd {
 		
 	public void reqAjoutParticipant(String nomParticipant, String prenomParticipant, String nomBateau, String typeBateau, int rating ) throws SQLException{
 		Connexion();
-		System.out.println(listeParticipant.size());
 		int id = listeParticipant.size();
 		try{
 		     PreparedStatement prepare = con.prepareStatement("INSERT INTO `eole`.`participant` (`ID_PARTICIPANT`, `NOM_PARTICIPANT`, `PRENOM_PARTICIPANT`, `NOM_VOILIER`, `CATEGORIE_VOILIER`, `RATING`)VALUES (?, ?, ?, ?, ?, ?); ");
@@ -122,10 +150,11 @@ public class Bdd {
 	public void reqAjoutRegate(String nomRegate, String dateRegate, String lieuDepart, String lieuArrive, int distance ) throws SQLException{
 		
 		Connexion();
-		 PreparedStatement prepare;
+		 
+		 int id = listeRegate.size();
 		 try {
-			 prepare = con.prepareStatement("INSERT INTO `eole`.`regate` (`ID_REGATE`, `NOM_REGATE`, `LIEU_DEPART`, `LIEU_ARRIVEE`, `DISTANCE`)VALUES (?, ?, ?, ?, ?, ?); ");
-			 prepare.setInt(1, 1);
+			 PreparedStatement prepare = con.prepareStatement("INSERT INTO `eole`.`regate` (`ID_REGATE`, `NOM_REGATE`, `DATE_REGATE`, `LIEU_DEPART`, `LIEU_ARRIVEE`, `DISTANCE`)VALUES (?, ?, ?, ?, ?, ?); ");
+			 prepare.setInt(1, id);
 			 prepare.setString (2, nomRegate);
 		     prepare.setString (3, dateRegate);
 		     prepare.setString (4, lieuDepart);
@@ -134,14 +163,14 @@ public class Bdd {
 		 
 		     prepare.executeUpdate();
 		     
-		     System.out.println("requ�te envoy� correctement");
+		     System.out.println("requête envoye correctement");
 		     
 		 } catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		 }
 
-		initialisation();
+		miseAJour();
 		deconnexion();
 	}
 	
@@ -152,4 +181,26 @@ public class Bdd {
 	public ArrayList<String> getListeType(){
 		return listeType;
 	}
+	
+	public ArrayList<String> getParticipant(){
+		return listeType;
+	}
+
+	public ArrayList<String> getListeDateRegate() {
+		return listeDateRegate;
+	}
+
+	public ArrayList<String> getListeLieuDepart() {
+		return listeLieuDepart;
+	}
+
+	public ArrayList<String> getListeLieuArrivee() {
+		return listeLieuArrivee;
+	}
+
+	public ArrayList<Integer> getListeDistance() {
+		return listeDistance;
+	}
+	
+	
 }

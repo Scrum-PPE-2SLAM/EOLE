@@ -3,6 +3,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -31,14 +32,16 @@ public class LancementRegate extends JFrame {
 	private JDateChooser cboDate;
 	private DTimer chrono;
 	private Window window;
-	private String[] listeRegate;
-	private JButton btnFin, btnReinit, btnDepart;
+	private ArrayList<String> listeRegate;
+	private JButton btnFin, btnReinit, btnDepart, btnSelectionner;
 	private JScrollPane scrollPane;
 	SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+	private Bdd maBdd;
+	
 
-	public LancementRegate(Window window, String[] listeRegate) {
+	public LancementRegate(Window window, Bdd maBdd) {
 		this.window = window;
-		this.listeRegate = listeRegate;
+		this.maBdd = maBdd;
 	}
 	
 	public void createAll(){
@@ -59,9 +62,25 @@ public class LancementRegate extends JFrame {
 		this.lblSelRegate.setBounds(217, 14, 156, 14);
 		this.panelSelRegate.add(lblSelRegate);
 		
-		this.cboSelRegate = new JComboBox<String>(listeRegate);
+		this.cboSelRegate = new JComboBox<String>(maBdd.getlisteRegate().toArray(new String[0]));
 		this.cboSelRegate.setBounds(383, 11, 161, 20);
 		this.panelSelRegate.add(cboSelRegate);
+		
+		this.btnSelectionner = new JButton("Valider");
+		this.btnSelectionner.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tfNomRegate.setText(maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex())); 
+				tfLieuDepart.setText(maBdd.getListeLieuDepart().get(cboSelRegate.getSelectedIndex()));
+				tfLieuArrivee.setText(maBdd.getListeLieuArrivee().get(cboSelRegate.getSelectedIndex()));
+				tfDistance.setText(""+maBdd.getListeDistance().get(cboSelRegate.getSelectedIndex()));
+				
+			}
+		});
+		this.btnSelectionner.setFont(new Font("Tahoma", Font.BOLD, 12));
+		this.btnSelectionner.setBounds(550, 11, 100, 20);
+		this.panelSelRegate.add(btnSelectionner);
+		
+		
 	}
 	
 	public void creationPanelInfoRegate() {
