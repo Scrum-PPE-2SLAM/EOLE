@@ -19,10 +19,12 @@ public class AjoutParticipant extends JFrame{
 	private Window window;
 	private JPanel panelNewParticipant, panelTitle;
 	private JButton btnEnvoyer;
+	private Bdd maBdd;
 	
 	
-	public AjoutParticipant(Window window){
+	public AjoutParticipant(Window window, Bdd maBdd){
 		this.window = window;
+		this.maBdd = maBdd;
 	}
 
 	public void createNouveauParticipant(){
@@ -86,7 +88,6 @@ public class AjoutParticipant extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 			try {
 				
-					Bdd maBdd = new Bdd();
 					maBdd.reqAjoutParticipant(tfNomParticipant.getText(), tfPrenomParticipant.getText() , tfNomDuVoilier.getText(), tfCategorieVoilier.getText() , Integer.parseInt(tfRating.getText()));
 
 			} catch (SQLException e1) {

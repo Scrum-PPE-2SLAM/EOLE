@@ -13,7 +13,6 @@ public class Bdd {
 	private static Statement st;
 	private static ResultSet rs;
 	private static int res;
-	private static int id=8;
 	
 	
 	
@@ -26,7 +25,7 @@ public class Bdd {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(url,user,password);
-			System.out.println("connexion �tablie");
+			System.out.println("connexion établie");
 			st = con.createStatement();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -51,6 +50,36 @@ public class Bdd {
 			listeRegate.add(rs.getString(1));
 		}
 		deconnexion();
+		System.out.println("reg " + listeRegate.size() + "; participants :" + listeParticipant.size());
+		
+		
+	}
+	
+	public void miseAJour(){
+		try {
+			String sql = "SELECT * FROM participant";
+			rs = st.executeQuery(sql);
+			
+			/////// fonction remove
+			
+			while(rs.next()){
+				
+				listeParticipant.add(rs.getString(2));
+			}
+			
+			String sql2 = "SELECT * FROM regate";
+			rs = st.executeQuery(sql2);
+			
+			while (rs.next()){
+				listeRegate.add(rs.getString(1));
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 		
@@ -66,6 +95,9 @@ public class Bdd {
 	}
 		
 	public void reqAjoutParticipant(String nomParticipant, String prenomParticipant, String nomBateau, String typeBateau, int rating ) throws SQLException{
+		Connexion();
+		System.out.println(listeParticipant.size());
+		int id = listeParticipant.size();
 		try{
 		     PreparedStatement prepare = con.prepareStatement("INSERT INTO `eole`.`participant` (`ID_PARTICIPANT`, `NOM_PARTICIPANT`, `PRENOM_PARTICIPANT`, `NOM_VOILIER`, `CATEGORIE_VOILIER`, `RATING`)VALUES (?, ?, ?, ?, ?, ?); ");
 		     prepare.setInt (1, id);
@@ -77,17 +109,19 @@ public class Bdd {
 		 
 		     prepare.executeUpdate();
 		     id++;
-		     System.out.println("requête envoy� correctement");
+		     System.out.println("requête envoyé correctement");
 		
 		} catch (Exception e){
 			e.printStackTrace();
 		}
-
-		initialisation();
+		
+		miseAJour();
 		deconnexion();
 	}
 	
 	public void reqAjoutRegate(String nomRegate, String dateRegate, String lieuDepart, String lieuArrive, int distance ) throws SQLException{
+		
+		Connexion();
 		 PreparedStatement prepare;
 		 try {
 			 prepare = con.prepareStatement("INSERT INTO `eole`.`regate` (`ID_REGATE`, `NOM_REGATE`, `LIEU_DEPART`, `LIEU_ARRIVEE`, `DISTANCE`)VALUES (?, ?, ?, ?, ?, ?); ");
