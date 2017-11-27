@@ -67,13 +67,7 @@ public class Bdd {
 		
 		try {
 			
-			String sql = "SELECT * FROM participant";
-			rs = st.executeQuery(sql);
 			
-			while(rs.next()){
-				
-				listeParticipant.add(rs.getString(2));
-			}
 			
 			/////// fonction remove
 			remove(listeParticipant);
@@ -83,7 +77,13 @@ public class Bdd {
 			remove(listeLieuArrivee);
 			remove(listeDistance);
 			
+			String sql = "SELECT * FROM participant";
+			rs = st.executeQuery(sql);
 			
+			while(rs.next()){
+				
+				listeParticipant.add(rs.getString(2));
+			}
 			
 			String sql2 = "SELECT * FROM regate";
 			rs = st.executeQuery(sql2);
@@ -183,7 +183,7 @@ public class Bdd {
 	}
 	
 	public ArrayList<String> getParticipant(){
-		return listeType;
+		return listeParticipant;
 	}
 
 	public ArrayList<String> getListeDateRegate() {
