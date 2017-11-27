@@ -100,12 +100,12 @@ public class AjoutRegate extends JFrame {
 
 		this.panelTableParticipant = new JPanel();
 		this.panelTableParticipant.setBorder(new TitledBorder(null, "Participants", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		this.panelTableParticipant.setBounds(220, 290, 120, 20);
+		this.panelTableParticipant.setBounds(404, 120, 370, 340);
 		this.window.add(panelTableParticipant);
 		this.panelTableParticipant.setLayout(null);
 		
 		JComboBox<String> cboSelParticipant = new JComboBox<String>(maBdd.getlisteRegate().toArray(new String[0]));
-		cboSelParticipant.setBounds(383, 11, 161, 20);
+		cboSelParticipant.setBounds(150, 11, 161, 20);
 		this.panelTableParticipant.add(cboSelParticipant);
 		
 		JButton btnAjout = new JButton("Ajout Participant");
@@ -117,7 +117,6 @@ public class AjoutRegate extends JFrame {
 		btnAjout.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnAjout.setBounds(150, 290, 120, 20);
 		this.panelTableParticipant.add(btnAjout);
-
 	}
 	
 	public void creationPanelTitre(String titre) {
