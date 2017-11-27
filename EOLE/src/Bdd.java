@@ -1,9 +1,11 @@
 import java.util.ArrayList;
+import java.awt.List;
 import java.sql.*;
 
 
 public class Bdd {
-	ArrayList<String> listeParticipant = new ArrayList<String>();
+	ArrayList<ArrayList> listeParticipant = new ArrayList<ArrayList>();
+	ArrayList infoParticipant;
 	ArrayList<String> listeRegate = new ArrayList<String>();
 	ArrayList<String> listeType= new ArrayList<String>();
 	ArrayList<String> listeDateRegate= new ArrayList<String>();
@@ -41,10 +43,20 @@ public class Bdd {
 	public void initialisation() throws SQLException{
 		String sql = "SELECT * FROM participant";
 		rs = st.executeQuery(sql);
-		listeParticipant = new ArrayList<String>();
+		listeParticipant = new ArrayList<ArrayList>();
 		while (rs.next()){
-			listeParticipant.add(rs.getString(2));
+			infoParticipant = new ArrayList();
+			infoParticipant.add(rs.getString(1));
+			infoParticipant.add(rs.getString(2));
+			infoParticipant.add(rs.getString(3));
+			infoParticipant.add(rs.getString(4));
+			infoParticipant.add(rs.getString(5));
+			infoParticipant.add(rs.getString(6));
+			
+			listeParticipant.add(infoParticipant);
 		}
+		
+		
 		
 		String sql2 = "SELECT * FROM regate";
 		rs = st.executeQuery(sql2);
@@ -82,7 +94,15 @@ public class Bdd {
 			
 			while(rs.next()){
 				
-				listeParticipant.add(rs.getString(2));
+				infoParticipant = new ArrayList();
+				infoParticipant.add(rs.getString(1));
+				infoParticipant.add(rs.getString(2));
+				infoParticipant.add(rs.getString(3));
+				infoParticipant.add(rs.getString(4));
+				infoParticipant.add(rs.getString(5));
+				infoParticipant.add(rs.getString(6));
+				
+				listeParticipant.add(infoParticipant);
 			}
 			
 			String sql2 = "SELECT * FROM regate";
@@ -182,10 +202,10 @@ public class Bdd {
 		return listeType;
 	}
 	
-	public ArrayList<String> getParticipant(){
+	public ArrayList<ArrayList> getParticipant(){
 		return listeParticipant;
 	}
-
+	
 	public ArrayList<String> getListeDateRegate() {
 		return listeDateRegate;
 	}

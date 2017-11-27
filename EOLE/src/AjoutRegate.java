@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.awt.List;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -114,9 +116,12 @@ public class AjoutRegate extends JFrame {
 		this.panelTableParticipant.setLayout(null);
 		
 
-
+		ArrayList<String> listeCombo = new ArrayList<String>();
+		for (int i=0; i<maBdd.getParticipant().size(); i++) {
+			listeCombo.add((String)maBdd.getParticipant().get(i).get(1) + " " + (String)maBdd.getParticipant().get(i).get(2) + ", " + (String)maBdd.getParticipant().get(i).get(3));
+		}
 		
-		cboSelParticipant = new JComboBox<String>(maBdd.getParticipant().toArray(new String[0]));
+		cboSelParticipant = new JComboBox<String>(listeCombo.toArray(new String[0]));
 		cboSelParticipant.setBounds(10, 20, 161, 20);
 
 		this.panelTableParticipant.add(cboSelParticipant);
@@ -210,9 +215,12 @@ public class AjoutRegate extends JFrame {
 				}
 			}
 			for (int i = 0; i < maBdd.getParticipant().size();i++) {
-				if (maBdd.getParticipant().get(i) == cboSelParticipant.getSelectedItem()) {
-					tableParticipants.setValueAt(maBdd.getParticipant().get(i), pos, 0);
-				}
+					ArrayList list = maBdd.getParticipant().get(cboSelParticipant.getSelectedIndex());
+					tableParticipants.setValueAt(list.get(1), pos, 0);
+					tableParticipants.setValueAt(list.get(2), pos, 1);
+					tableParticipants.setValueAt(list.get(3), pos, 2);
+					tableParticipants.setValueAt(list.get(4), pos, 3);
+					tableParticipants.setValueAt(list.get(5), pos, 4);
 			}
 		}
 	}
