@@ -104,7 +104,7 @@ public class AjoutRegate extends JFrame {
 		this.window.add(panelTableParticipant);
 		this.panelTableParticipant.setLayout(null);
 		
-		JComboBox<String> cboSelParticipant = new JComboBox<String>(maBdd.getlisteRegate().toArray(new String[0]));
+		JComboBox<String> cboSelParticipant = new JComboBox<String>(maBdd.getParticipant().toArray(new String[0]));
 		cboSelParticipant.setBounds(150, 11, 161, 20);
 		this.panelTableParticipant.add(cboSelParticipant);
 		
