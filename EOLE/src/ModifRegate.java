@@ -15,7 +15,7 @@ public class ModifRegate extends JFrame {
 		
 		ajoutRegate = new AjoutRegate(window, maBdd);
 		ajoutRegate.creationPanelAjoutRegate();
-		ajoutRegate.creationPanelTableau();
+		ajoutRegate.creationPanelParticipants();
 		ajoutRegate.creationPanelTitre("MODIFICATION REGATE");
 	}
 	

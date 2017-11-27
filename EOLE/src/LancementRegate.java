@@ -29,7 +29,7 @@ public class LancementRegate extends JFrame {
 	private JLabel lblSelRegate, lblNomRegate, lblDate, lblLieuDepart, lblLieuArrivee, lblDistance, lblChrono;
 	private JTextField tfNomRegate, tfLieuDepart, tfLieuArrivee, tfDistance;
 	private JComboBox<String> cboSelRegate;
-	private JDateChooser cboDate;
+	private JTextField tfDate;
 	private DTimer chrono;
 	private Window window;
 	private ArrayList<String> listeRegate;
@@ -72,7 +72,8 @@ public class LancementRegate extends JFrame {
 				tfNomRegate.setText(maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex())); 
 				tfLieuDepart.setText(maBdd.getListeLieuDepart().get(cboSelRegate.getSelectedIndex()));
 				tfLieuArrivee.setText(maBdd.getListeLieuArrivee().get(cboSelRegate.getSelectedIndex()));
-				tfDistance.setText(""+maBdd.getListeDistance().get(cboSelRegate.getSelectedIndex()));
+				tfDistance.setText(Integer.toString(maBdd.getListeDistance().get(cboSelRegate.getSelectedIndex())));
+				tfDate.setText(maBdd.getListeDateRegate().get(cboSelRegate.getSelectedIndex()));
 				
 			}
 		});
@@ -111,14 +112,15 @@ public class LancementRegate extends JFrame {
 		this.tfDistance = new JTextField(15);
 		this.tfDistance.setEditable(false);
 		this.tfDistance.setBounds(135, 173, 185, 26);
-		this.cboDate = new JDateChooser();
-		this.cboDate.setBounds(135, 64, 118, 26);
+		this.tfDate = new JTextField();
+		this.tfDate.setBounds(135, 64, 118, 26);
+		this.tfDate.setEditable(false);
 		this.panelInfoRegate.setLayout(null);
 		
 		this.panelInfoRegate.add(lblNomRegate);
 		this.panelInfoRegate.add(tfNomRegate);
 		this.panelInfoRegate.add(lblDate);
-		this.panelInfoRegate.add(cboDate);
+		this.panelInfoRegate.add(tfDate);
 		this.panelInfoRegate.add(lblLieuDepart);
 		this.panelInfoRegate.add(tfLieuDepart);
 		this.panelInfoRegate.add(lblLieuArrivee);

@@ -193,7 +193,7 @@ public class Window extends JFrame {
 		reinitContentPane();
 		AjoutRegate ajoutRegate = new AjoutRegate(this, maBdd);
 		ajoutRegate.creationPanelAjoutRegate();
-		ajoutRegate.creationPanelTableau();
+		ajoutRegate.creationPanelParticipants();
 		ajoutRegate.creationPanelTitre("AJOUT NOUVELLE REGATE ");
 		contentPane.revalidate();
 	}

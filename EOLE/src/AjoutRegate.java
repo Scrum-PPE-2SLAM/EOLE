@@ -1,11 +1,16 @@
 import java.awt.Font;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -63,7 +68,11 @@ public class AjoutRegate extends JFrame {
 		this.btnEnvoyer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			try {
-					maBdd.reqAjoutRegate(tfNomRegate.getText(), cboDate.getDateFormatString() , tfLieuDepart.getText(), tfLieuArrivee.getText() , Integer.parseInt(tfDistance.getText()));
+				String maDateString;
+				SimpleDateFormat formatter = new SimpleDateFormat ("dd/MM/yyyy" );
+				
+				maDateString = formatter.format(cboDate.getDate());
+					maBdd.reqAjoutRegate(tfNomRegate.getText(), maDateString, tfLieuDepart.getText(), tfLieuArrivee.getText() , Integer.parseInt(tfDistance.getText()));
 
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
@@ -84,18 +93,31 @@ public class AjoutRegate extends JFrame {
 		this.panelInfoRegate.add(lblLieuArrivee);
 		this.panelInfoRegate.add(tfLieuArrivee);
 		this.panelInfoRegate.add(lblDistance);
-		this.panelInfoRegate.add(tfDistance);
-		
-		
+		this.panelInfoRegate.add(tfDistance);		
 	}
 	
-	public void creationPanelTableau() {
-		
+	public void creationPanelParticipants() {
+
 		this.panelTableParticipant = new JPanel();
 		this.panelTableParticipant.setBorder(new TitledBorder(null, "Participants", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		this.panelTableParticipant.setBounds(404, 120, 370, 340);
+		this.panelTableParticipant.setBounds(220, 290, 120, 20);
 		this.window.add(panelTableParticipant);
 		this.panelTableParticipant.setLayout(null);
+		
+		JComboBox<String> cboSelParticipant = new JComboBox<String>(maBdd.getlisteRegate().toArray(new String[0]));
+		cboSelParticipant.setBounds(383, 11, 161, 20);
+		this.panelTableParticipant.add(cboSelParticipant);
+		
+		JButton btnAjout = new JButton("Ajout Participant");
+		btnAjout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
+		btnAjout.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnAjout.setBounds(150, 290, 120, 20);
+		this.panelTableParticipant.add(btnAjout);
+
 	}
 	
 	public void creationPanelTitre(String titre) {
@@ -110,4 +132,6 @@ public class AjoutRegate extends JFrame {
 		lblSelRegate.setBounds(10, 14, 744, 32);
 		panelTitreRegate.add(lblSelRegate);
 	}
+	
+	
 }
