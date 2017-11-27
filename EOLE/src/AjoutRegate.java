@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -7,14 +8,19 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -29,6 +35,9 @@ public class AjoutRegate extends JFrame {
 	private Window window;
 	private JButton btnEnvoyer;
 	private Bdd maBdd;
+	private JScrollPane scrollPane;
+	private JTable tableParticipants;
+	private JComboBox<String> cboSelParticipant;
 
 	public AjoutRegate(Window window, Bdd maBdd) {
 		this.window = window;
@@ -107,7 +116,7 @@ public class AjoutRegate extends JFrame {
 
 
 		
-		JComboBox<String> cboSelParticipant = new JComboBox<String>(maBdd.getParticipant().toArray(new String[0]));
+		cboSelParticipant = new JComboBox<String>(maBdd.getParticipant().toArray(new String[0]));
 		cboSelParticipant.setBounds(10, 20, 161, 20);
 
 		this.panelTableParticipant.add(cboSelParticipant);
@@ -115,12 +124,66 @@ public class AjoutRegate extends JFrame {
 		JButton btnAjout = new JButton("Ajout Participant");
 		btnAjout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				ajoutParticipantTable();
 			}
 		});
 		btnAjout.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnAjout.setBounds(180, 20, 120, 20);
 		this.panelTableParticipant.add(btnAjout);
+		
+		
+		
+	
+		scrollPane = new JScrollPane();
+		this.scrollPane.setBounds(10, 50, 350, 285);
+		this.panelTableParticipant.add(scrollPane);
+		
+		this.tableParticipants = new JTable(20,5);
+		this.tableParticipants.setBorder(new LineBorder(new Color(0, 0, 0)));
+		this.scrollPane.setViewportView(tableParticipants);
+		this.tableParticipants.setFillsViewportHeight(true);
+		this.tableParticipants.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+
+				
+			},
+			new String[] {"Nom", "Prénom", "Voilier", "Catégorie", "Rating"}
+		) {
+
+			private static final long serialVersionUID = 1L;
+			boolean[] columnEditables = new boolean[] {
+				false, true, true, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		
+
+		
+		this.tableParticipants.getColumnModel().getColumn(1).setPreferredWidth(45);
+		this.tableParticipants.getColumnModel().getColumn(2).setPreferredWidth(45);
+		this.tableParticipants.setRowHeight(18);
 	}
 	
 	public void creationPanelTitre(String titre) {
@@ -136,5 +199,22 @@ public class AjoutRegate extends JFrame {
 		panelTitreRegate.add(lblSelRegate);
 	}
 	
+	public void ajoutParticipantTable() {
+		if (tableParticipants.getValueAt(19, 0) != null) {
+			
+		}else {
+			int pos = 0;
+			for (int i = 0; i<20; i++) {
+				if (tableParticipants.getValueAt(i, 0) != null) {
+					pos += 1;
+				}
+			}
+			for (int i = 0; i < maBdd.getParticipant().size();i++) {
+				if (maBdd.getParticipant().get(i) == cboSelParticipant.getSelectedItem()) {
+					tableParticipants.setValueAt(maBdd.getParticipant().get(i), pos, 0);
+				}
+			}
+		}
+	}
 	
 }
