@@ -40,6 +40,7 @@ public class AjoutRegate extends JFrame {
 	private JScrollPane scrollPane;
 	private JTable tableParticipants;
 	private JComboBox<String> cboSelParticipant;
+	private ArrayList<ArrayList> listeParticipantRegate= new ArrayList<ArrayList>();
 
 	public AjoutRegate(Window window, Bdd maBdd) {
 		this.window = window;
@@ -83,8 +84,7 @@ public class AjoutRegate extends JFrame {
 				SimpleDateFormat formatter = new SimpleDateFormat ("dd/MM/yyyy" );
 				
 				maDateString = formatter.format(cboDate.getDate());
-					maBdd.reqAjoutRegate(tfNomRegate.getText(), maDateString, tfLieuDepart.getText(), tfLieuArrivee.getText() , Integer.parseInt(tfDistance.getText()));
-
+				maBdd.reqAjoutRegate(tfNomRegate.getText(), maDateString, tfLieuDepart.getText(), tfLieuArrivee.getText() , Integer.parseInt(tfDistance.getText()), listeParticipantRegate);
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -130,6 +130,7 @@ public class AjoutRegate extends JFrame {
 		btnAjout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ajoutParticipantTable();
+				
 			}
 		});
 		btnAjout.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -205,6 +206,7 @@ public class AjoutRegate extends JFrame {
 	}
 	
 	public void ajoutParticipantTable() {
+
 		if (tableParticipants.getValueAt(19, 0) != null) {
 			
 		}else {
@@ -214,14 +216,14 @@ public class AjoutRegate extends JFrame {
 					pos += 1;
 				}
 			}
-			for (int i = 0; i < maBdd.getParticipant().size();i++) {
+				
 					ArrayList list = maBdd.getParticipant().get(cboSelParticipant.getSelectedIndex());
+					listeParticipantRegate.add(list);
 					tableParticipants.setValueAt(list.get(1), pos, 0);
 					tableParticipants.setValueAt(list.get(2), pos, 1);
 					tableParticipants.setValueAt(list.get(3), pos, 2);
 					tableParticipants.setValueAt(list.get(4), pos, 3);
 					tableParticipants.setValueAt(list.get(5), pos, 4);
-			}
 		}
 	}
 	

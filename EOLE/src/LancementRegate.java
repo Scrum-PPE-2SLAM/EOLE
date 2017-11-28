@@ -36,6 +36,7 @@ public class LancementRegate extends JFrame {
 	private ArrayList<String> listeRegate;
 	private JButton btnFin, btnReinit, btnDepart, btnSelectionner;
 	private JScrollPane scrollPane;
+	private ArrayList<ArrayList<String>> lesParticipants;
 	SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
 	private Bdd maBdd;
 	
@@ -63,18 +64,15 @@ public class LancementRegate extends JFrame {
 		this.lblSelRegate.setBounds(217, 14, 156, 14);
 		this.panelSelRegate.add(lblSelRegate);
 		
-		this.cboSelRegate = new JComboBox<String>(maBdd.getlisteRegate().toArray(new String[0]));
+		this.cboSelRegate = new JComboBox<String>(maBdd.getListeNomRegate().toArray(new String[0]));
 		this.cboSelRegate.setBounds(383, 11, 161, 20);
 		this.panelSelRegate.add(cboSelRegate);
 		
 		this.btnSelectionner = new JButton("Valider");
 		this.btnSelectionner.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tfNomRegate.setText(maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex())); 
-				tfLieuDepart.setText(maBdd.getListeLieuDepart().get(cboSelRegate.getSelectedIndex()));
-				tfLieuArrivee.setText(maBdd.getListeLieuArrivee().get(cboSelRegate.getSelectedIndex()));
-				tfDistance.setText(Integer.toString(maBdd.getListeDistance().get(cboSelRegate.getSelectedIndex())));
-				tfDate.setText(maBdd.getListeDateRegate().get(cboSelRegate.getSelectedIndex()));
+				chargerInfoRegate();
+				ajoutParticipantsTableau();
 				
 			}
 		});
@@ -262,4 +260,23 @@ public class LancementRegate extends JFrame {
 					JOptionPane.showMessageDialog(null, "Le chronomètre n'est pas lancé", "Erreur", JOptionPane.ERROR_MESSAGE);
 				}
 			}
+	
+	public void chargerInfoRegate() {
+		
+		tfNomRegate.setText(maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex()).getNomRegate()); 
+		tfLieuDepart.setText(maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex()).getLieuDepart()); 
+		tfLieuArrivee.setText(maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex()).getLieuArrive()); 
+		tfDistance.setText(Integer.toString(maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex()).getDistance())); 
+		tfDate.setText(maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex()).getDateRegate()); 
+	}
+	
+	public void ajoutParticipantsTableau() {
+		lesParticipants = new ArrayList<ArrayList<String>>();
+		lesParticipants = maBdd.getParticipantRegate(maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex()).getIdRegate());
+		for (int i=0; i < lesParticipants.size(); i++) {
+			tableParticipants.setValueAt(lesParticipants.get(i).get(1), i, 0);
+		}
+	}
+	
+	
 }

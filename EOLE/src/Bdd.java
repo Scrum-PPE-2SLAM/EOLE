@@ -1,4 +1,7 @@
 import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+
 import java.awt.List;
 import java.sql.*;
 
@@ -6,12 +9,13 @@ import java.sql.*;
 public class Bdd {
 	ArrayList<ArrayList> listeParticipant = new ArrayList<ArrayList>();
 	ArrayList infoParticipant;
-	ArrayList<String> listeRegate = new ArrayList<String>();
+	ArrayList<Regate> listeRegate = new ArrayList<Regate>();
 	ArrayList<String> listeType= new ArrayList<String>();
 	ArrayList<String> listeDateRegate= new ArrayList<String>();
 	ArrayList<String> listeLieuDepart= new ArrayList<String>();
 	ArrayList<String> listeLieuArrivee= new ArrayList<String>();
 	ArrayList<Integer> listeDistance= new ArrayList<Integer>();
+	private ArrayList<String> listeNomRegate = new ArrayList<String>();
 	private static String url ="jdbc:mysql://localhost:3306/eole";
 	private static String user ="root";
 	private static String password = "";
@@ -60,14 +64,12 @@ public class Bdd {
 		
 		String sql2 = "SELECT * FROM regate";
 		rs = st.executeQuery(sql2);
-		listeRegate = new ArrayList<String>();
+		listeRegate = new ArrayList<Regate>();
 		
 		while (rs.next()){
-			listeRegate.add(rs.getString(2));
-			listeDateRegate.add(rs.getString(3));
-			listeLieuDepart.add(rs.getString(4));
-			listeLieuArrivee.add(rs.getString(5));
-			listeDistance.add(rs.getInt(6)); 
+			Regate regate = new Regate(rs.getInt(1),rs.getInt(6),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5));
+			listeRegate.add(regate);
+			listeNomRegate.add(rs.getString(2));
 		}
 		deconnexion();
 		System.out.println("regates : " + listeRegate.size() + "; participants : " + listeParticipant.size());
@@ -110,11 +112,9 @@ public class Bdd {
 			
 			while (rs.next()){
 				
-				listeRegate.add(rs.getString(2));
-				listeDateRegate.add(rs.getString(3));
-				listeLieuDepart.add(rs.getString(4));
-				listeLieuArrivee.add(rs.getString(5));
-				listeDistance.add(rs.getInt(6)); 
+				Regate regate = new Regate(rs.getInt(1),rs.getInt(6),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5));
+				listeRegate.add(regate);
+				listeNomRegate.add(rs.getString(2));
 			}
 			
 		} catch (SQLException e) {
@@ -167,7 +167,7 @@ public class Bdd {
 		deconnexion();
 	}
 	
-	public void reqAjoutRegate(String nomRegate, String dateRegate, String lieuDepart, String lieuArrive, int distance ) throws SQLException{
+	public void reqAjoutRegate(String nomRegate, String dateRegate, String lieuDepart, String lieuArrive, int distance, ArrayList<ArrayList> participantsRegate) throws SQLException{
 		
 		Connexion();
 		 
@@ -182,11 +182,15 @@ public class Bdd {
 		     prepare.setInt(6, distance);
 		 
 		     prepare.executeUpdate();
+		     System.out.println(participantsRegate.size());
+		     for (int i=0; i < participantsRegate.size(); i++) {
+		    	 System.out.println(Integer.parseInt(participantsRegate.get(i).get(0)+"") + 20);
+		    	 reqAjoutParticipantReg(Integer.parseInt((String)participantsRegate.get(i).get(0)), id);
+		     }
 		     
 		     System.out.println("requête envoye correctement");
 		     
 		 } catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		 }
 
@@ -194,7 +198,23 @@ public class Bdd {
 		deconnexion();
 	}
 	
-	public ArrayList<String> getlisteRegate(){
+	public void reqAjoutParticipantReg(int idParticipant, int idRegate) throws SQLException{
+		
+		 try {
+			 PreparedStatement prepare = con.prepareStatement("INSERT INTO `eole`.`classement` (`ID_PARTICIPANT`, `ID_REGATE`, `TEMPS_REEL`, `POSITION`)VALUES (?, ?, ?, ?); ");
+			 prepare.setInt(1, idParticipant);
+			 prepare.setInt (2, idRegate);
+		     prepare.setString (3, null);
+		     prepare.setInt (4, -1);
+		 
+		     prepare.executeUpdate();
+		     
+		 } catch (SQLException e) {
+				JOptionPane.showMessageDialog(null, "Des doublons dans les participants ont été détéctés. Ils n'ont pas été pris en compte.", "Attention", JOptionPane.WARNING_MESSAGE);
+		 }
+	}
+	
+	public ArrayList<Regate> getlisteRegate(){
 		return listeRegate;
 	}
 	
@@ -206,21 +226,39 @@ public class Bdd {
 		return listeParticipant;
 	}
 	
-	public ArrayList<String> getListeDateRegate() {
-		return listeDateRegate;
-	}
-
-	public ArrayList<String> getListeLieuDepart() {
-		return listeLieuDepart;
-	}
-
-	public ArrayList<String> getListeLieuArrivee() {
-		return listeLieuArrivee;
-	}
-
-	public ArrayList<Integer> getListeDistance() {
-		return listeDistance;
-	}
 	
+
+	
+	public ArrayList<String> getListeNomRegate() {
+		return listeNomRegate;
+	}
+
+	public ArrayList<ArrayList<String>> getParticipantRegate(int idRegate) {
+		Connexion();
+		String sqlListeParticipantRegate = "SELECT * FROM participant WHERE ID_PARTICIPANT IN (SELECT ID_PARTICIPANT FROM classement WHERE ID_REGATE = " + idRegate + ")";
+		try {
+			ArrayList<String> unParticipant;
+			ArrayList<ArrayList<String>> participantCetteRegate = new ArrayList<ArrayList<String>>();
+			rs = st.executeQuery(sqlListeParticipantRegate);
+			
+			while (rs.next()) {
+				unParticipant = new ArrayList<String>();
+				unParticipant.add(rs.getString(1));
+				unParticipant.add(rs.getString(2));
+				unParticipant.add(rs.getString(3));
+				unParticipant.add(rs.getString(4));
+				unParticipant.add(rs.getString(5));
+				
+				participantCetteRegate.add(unParticipant);
+			}
+			deconnexion();
+			return participantCetteRegate;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		deconnexion();
+		return null;
+		
+	}
 	
 }
