@@ -1,5 +1,10 @@
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,10 +23,14 @@ public class Classement extends JFrame {
 	private JLabel lblSelRegate;
 	private JTable tableClassement;
 	private JComboBox<String> cboSelRegate;
+	private Bdd maBdd;
+	private JButton btnSelectionner;
+	private ArrayList<ArrayList<String>> lesParticipants, leClassement;
 	
-	public Classement(Window window){
+	public Classement(Window window, Bdd maBdd){
 		
 		this.window = window;
+		this.maBdd = maBdd;
 	}
 	
 	public void createClassement(){	
@@ -64,7 +73,7 @@ public class Classement extends JFrame {
 				{null, null, null, null, null},
 				{null, null, null, null, null},
 			},
-			new String[] {"Participant", "Arriv\u00E9e", "Abandon", "Temp r\u00E9el", "Temp compens\u00E9"}
+			new String[] {"Position", "Nom", "Prenom", "Temp r\u00E9el", "Temp compens\u00E9"}
 		) {
 
 			private static final long serialVersionUID = 1L;
@@ -76,31 +85,62 @@ public class Classement extends JFrame {
 			}
 		});
 		
-		tableClassement.getColumnModel().getColumn(1).setPreferredWidth(50);
-		tableClassement.getColumnModel().getColumn(2).setPreferredWidth(50);
+		tableClassement.getColumnModel().getColumn(0).setPreferredWidth(1);
+		tableClassement.getColumnModel().getColumn(1).setPreferredWidth(70);
+		tableClassement.getColumnModel().getColumn(2).setPreferredWidth(70);
 		tableClassement.getColumnModel().getColumn(3).setPreferredWidth(70);
 		tableClassement.getColumnModel().getColumn(4).setPreferredWidth(70);
 	}
 	
-public void createPanelSelRegate(String categorie) {
+	public void createPanelSelRegate(String categorie) {
+			
+			panelSelRegate = new JPanel();
+			panelSelRegate.setBounds(10, 11, 764, 57);
+			window.add(panelSelRegate);
+			panelSelRegate.setLayout(null);
+			
+			lblSelRegate = new JLabel("Classement "+ categorie + ": ");
+			lblSelRegate.setBounds(217, 14, 156, 14);
+			panelSelRegate.add(lblSelRegate);
+			
+			cboSelRegate = new JComboBox<String>(maBdd.getListeNomRegate().toArray(new String[0]));
+			cboSelRegate.setBounds(383, 11, 161, 20);
+			panelSelRegate.add(cboSelRegate);
+			
+			this.btnSelectionner = new JButton("Valider");
+			this.btnSelectionner.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					ajoutClassement();
+				}
+			});
+			this.btnSelectionner.setFont(new Font("Tahoma", Font.BOLD, 12));
+			this.btnSelectionner.setBounds(550, 11, 100, 20);
+			this.panelSelRegate.add(btnSelectionner);
+		}
+	
+	
+	public void ajoutClassement(){
+		lesParticipants = new ArrayList<ArrayList<String>>();
+		lesParticipants = maBdd.getParticipantRegate(maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex()).getIdRegate());
 		
-		panelSelRegate = new JPanel();
-		panelSelRegate.setBounds(10, 11, 764, 57);
-		window.add(panelSelRegate);
-		panelSelRegate.setLayout(null);
+		leClassement = new ArrayList<ArrayList<String>>();
+		leClassement = maBdd.getClassementRegate(maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex()).getIdRegate());
 		
-		lblSelRegate = new JLabel("Classement "+ categorie + ": ");
-		lblSelRegate.setBounds(217, 14, 156, 14);
-		panelSelRegate.add(lblSelRegate);
-		if(categorie == "Général"){
-			//cboSelRegate = new JComboBox<String>(window.getListeRegate().toArray(new String[0]));
-		}else{
-			cboSelRegate = new JComboBox<String>(window.getListeType().toArray(new String[0]));
+		for (int i=0; i < lesParticipants.size(); i++) {
+			tableClassement.setValueAt(lesParticipants.get(i).get(1), i, 1);
+			tableClassement.setValueAt(lesParticipants.get(i).get(2), i, 2);
+			
+			tableClassement.setValueAt(leClassement.get(i).get(0), i, 3);
+			if (Integer.parseInt(leClassement.get(i).get(1)) == -1){
+				tableClassement.setValueAt("Non classé", i, 0);
+			}else if (Integer.parseInt(leClassement.get(i).get(1)) == 0){
+				tableClassement.setValueAt("abandon", i, 0);
+			}else{
+				tableClassement.setValueAt(leClassement.get(i).get(1), i, 0);
+			}
 		}
 		
-		cboSelRegate.setBounds(383, 11, 161, 20);
-		panelSelRegate.add(cboSelRegate);
 	}
-
 }
 
