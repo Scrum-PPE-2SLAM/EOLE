@@ -274,7 +274,7 @@ public class LancementRegate extends JFrame {
 		lesParticipants = new ArrayList<ArrayList<String>>();
 		lesParticipants = maBdd.getParticipantRegate(maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex()).getIdRegate());
 		for (int i=0; i < lesParticipants.size(); i++) {
-			tableParticipants.setValueAt(lesParticipants.get(i).get(1), i, 0);
+			tableParticipants.setValueAt(lesParticipants.get(i).get(2) + lesParticipants.get(i).get(1), i, 0);
 		}
 	}
 	
