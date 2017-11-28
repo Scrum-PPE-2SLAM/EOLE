@@ -8,38 +8,37 @@ import javax.swing.JCheckBox;
 import javax.swing.JTable;
 
 
-class ButtonEditor extends DefaultCellEditor {
-  /**
-	 * 
-	 */
+class ButtonEditor extends DefaultCellEditor 
+{
 	private static final long serialVersionUID = 1L;
+	protected JButton button;
+	private String label;
+	private LancementRegate lr;
+	private boolean isPushed;
 
-protected JButton button;
+	public ButtonEditor(JCheckBox checkBox, LancementRegate lr) 
+	{
+		super(checkBox);
+    
+	    button = new JButton();
+	    button.setOpaque(true);
+	    button.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		fireEditingStopped();
+	    	}
+	    });
+    
+	    this.lr = lr;
+	}
 
-  private String label;
-
-  private LancementRegate lr;
-  
-  private boolean isPushed;
-
-  public ButtonEditor(JCheckBox checkBox, LancementRegate lr) {
-    super(checkBox);
-    button = new JButton();
-    button.setOpaque(true);
-    button.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        fireEditingStopped();
-      }
-    });
-    this.lr = lr;
-  }
-
-  public Component getTableCellEditorComponent(JTable table, Object value,
-      boolean isSelected, int row, int column) {
-    if (isSelected) {
-      button.setForeground(table.getSelectionForeground());
-      button.setBackground(table.getSelectionBackground());
-    } else {
+	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) 
+	{
+		if (isSelected) 
+		{
+			button.setForeground(table.getSelectionForeground());
+			button.setBackground(table.getSelectionBackground());
+		} else 
+		{
       button.setForeground(table.getForeground());
       button.setBackground(table.getBackground());
     }
@@ -49,24 +48,29 @@ protected JButton button;
     return button;
   }
 
-  public Object getCellEditorValue() {
-    if (isPushed) {
-    	if (label == "✔") {
-    		lr.setTime(true);
-    	}else {
-    		lr.setTime(false);
-    	}
-    }
-    isPushed = false;
-    return new String(label);
-  }
+	public Object getCellEditorValue() 
+	{
+		if (isPushed) 
+		{
+			if (label == "✔")
+			{
+				lr.setTime(true);
+			}else {
+				lr.setTime(false);
+			}
+		}
+		isPushed = false;
+		return new String(label);
+	}
 
-  public boolean stopCellEditing() {
-    isPushed = false;
-    return super.stopCellEditing();
-  }
+	public boolean stopCellEditing() 
+	{
+		isPushed = false;
+		return super.stopCellEditing();
+	}
 
-  protected void fireEditingStopped() {
-    super.fireEditingStopped();
-  }
+	protected void fireEditingStopped() 
+	{
+		super.fireEditingStopped();
+	}
 }

@@ -2,25 +2,32 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-public class ModifRegate extends JFrame {
+public class ModifRegate extends JFrame 
+{
 
 	private static final long serialVersionUID = 1L;
 	private Window window;
+	private Bdd maBdd;
 	private JLabel lblSelRegate;
 	private JComboBox<String> cboSelRegate;
 	private AjoutRegate ajoutRegate;
 	
-	public ModifRegate(Window window, Bdd maBdd) {
+	public ModifRegate(Window window, Bdd maBdd) 
+	{
 		this.window = window;
-		
-		ajoutRegate = new AjoutRegate(window, maBdd);
-		ajoutRegate.creationPanelAjoutRegate();
-		ajoutRegate.creationPanelParticipants();
-		ajoutRegate.creationPanelTitre("MODIFICATION REGATE");
+		this.maBdd = maBdd;
 	}
 	
-	public void ajoutCombo(String[] listeRegate) {
-		
+	public void ajoutFenetre() 
+	{
+		this.ajoutRegate = new AjoutRegate(window, maBdd);
+		this.ajoutRegate.creationPanelAjoutRegate();
+		this.ajoutRegate.creationPanelParticipants();
+		this.ajoutRegate.creationPanelTitre("MODIFICATION REGATE");
+	}
+	
+	public void ajoutCombo(String[] listeRegate) 
+	{
 		this.lblSelRegate = new JLabel("Selectionner la régate à modifier : ");
 		this.lblSelRegate.setBounds(175, 68, 380, 14);
 		this.ajoutRegate.panelTitreRegate.add(lblSelRegate);

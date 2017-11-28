@@ -2,18 +2,16 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.TitledBorder;
 
-import com.toedter.calendar.JDateChooser;
-
-public class AjoutParticipant extends JFrame{
+public class AjoutParticipant extends JFrame
+{
+	private static final long serialVersionUID = 1L;
 	private JLabel lblNomParticipant, lblPrenomParticipant, lblNomDuVoilier, lblCategorieVoilier, lblRating, lblTitle;
 	private JTextField tfNomParticipant, tfPrenomParticipant, tfNomDuVoilier, tfCategorieVoilier, tfRating;
 	private Window window;
@@ -21,27 +19,24 @@ public class AjoutParticipant extends JFrame{
 	private JButton btnEnvoyer;
 	private Bdd maBdd;
 	
-	
-	public AjoutParticipant(Window window, Bdd maBdd){
+	public AjoutParticipant(Window window, Bdd maBdd)
+	{
 		this.window = window;
 		this.maBdd = maBdd;
 	}
 
-	public void createNouveauParticipant(){
+	public void createNouveauParticipant()
+	{
+		this.panelTitle = new JPanel();
+		this.panelTitle.setBounds(10, 30, 764, 57);
+		this.panelTitle.setLayout(null);
+		this.window.add(panelTitle);
 		
-		
-		
-		panelTitle = new JPanel();
-		panelTitle.setBounds(10, 30, 764, 57);
-		window.add(panelTitle);
-		panelTitle.setLayout(null);
-		
-		lblTitle = new JLabel("AJOUT PARTICIPANT");
-		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 40));
-		lblTitle.setBounds(10, 14, 744, 32);
-		panelTitle.add(lblTitle);
-		
+		this.lblTitle = new JLabel("AJOUT PARTICIPANT");
+		this.lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		this.lblTitle.setFont(new Font("Tahoma", Font.BOLD, 40));
+		this.lblTitle.setBounds(10, 14, 744, 32);
+		this.panelTitle.add(lblTitle);
 		
 		this.panelNewParticipant = new JPanel();
 		this.panelNewParticipant.setBounds(200, 120, 400, 400);
@@ -84,24 +79,23 @@ public class AjoutParticipant extends JFrame{
 		this.panelNewParticipant.setLayout(null);
 		
 		this.btnEnvoyer = new JButton("Enregistrer");
-		this.btnEnvoyer.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			try {
-				
-					maBdd.reqAjoutParticipant(tfNomParticipant.getText(), tfPrenomParticipant.getText() , tfNomDuVoilier.getText(), tfCategorieVoilier.getText() , Integer.parseInt(tfRating.getText()));
-
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}		
+		this.btnEnvoyer.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				try 
+				{
+						maBdd.reqAjoutParticipant(tfNomParticipant.getText(), tfPrenomParticipant.getText() , tfNomDuVoilier.getText(), tfCategorieVoilier.getText() , Integer.parseInt(tfRating.getText()));
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}		
 			}
 		});
+		
 		this.btnEnvoyer.setFont(new Font("Tahoma", Font.BOLD, 12));
 		this.btnEnvoyer.setBounds(150, 220, 120, 20);
 		this.panelNewParticipant.add(btnEnvoyer);
-		
-		
-		
+
 		this.panelNewParticipant.add(lblNomParticipant);
 		this.panelNewParticipant.add(tfNomParticipant);
 		

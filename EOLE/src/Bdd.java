@@ -167,7 +167,7 @@ public class Bdd {
 		deconnexion();
 	}
 	
-	public void reqAjoutRegate(String nomRegate, String dateRegate, String lieuDepart, String lieuArrive, int distance, ArrayList<ArrayList> participantsRegate) throws SQLException{
+	public void reqAjoutRegate(String nomRegate, String dateRegate, String lieuDepart, String lieuArrive, int distance, ArrayList<ArrayList<String>> participantsRegate) throws SQLException{
 		
 		Connexion();
 		 

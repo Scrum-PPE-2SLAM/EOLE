@@ -1,10 +1,11 @@
 
-public class Regate {
+public class Regate 
+{
 	private int idRegate, distance;
 	private String nomRegate, dateRegate, lieuDepart, lieuArrive;
 	
-	public Regate(int idRegate, int distance, String nomRegate, String dateRegate, String lieuDepart,
-			String lieuArrive) {
+	public Regate(int idRegate, int distance, String nomRegate, String dateRegate, String lieuDepart, String lieuArrive) 
+	{
 		super();
 		this.idRegate = idRegate;
 		this.distance = distance;
@@ -14,27 +15,33 @@ public class Regate {
 		this.lieuArrive = lieuArrive;
 	}
 
-	public int getIdRegate() {
+	public int getIdRegate() 
+	{
 		return idRegate;
 	}
 
-	public int getDistance() {
+	public int getDistance() 
+	{
 		return distance;
 	}
 
-	public String getNomRegate() {
+	public String getNomRegate() 
+	{
 		return nomRegate;
 	}
 
-	public String getDateRegate() {
+	public String getDateRegate() 
+	{
 		return dateRegate;
 	}
 
-	public String getLieuDepart() {
+	public String getLieuDepart() 
+	{
 		return lieuDepart;
 	}
 
-	public String getLieuArrive() {
+	public String getLieuArrive() 
+	{
 		return lieuArrive;
 	}
 	
