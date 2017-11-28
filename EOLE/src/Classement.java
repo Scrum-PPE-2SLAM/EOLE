@@ -93,7 +93,7 @@ public void createPanelSelRegate(String categorie) {
 		lblSelRegate.setBounds(217, 14, 156, 14);
 		panelSelRegate.add(lblSelRegate);
 		if(categorie == "Général"){
-			cboSelRegate = new JComboBox<String>(window.getListeRegate().toArray(new String[0]));
+			//cboSelRegate = new JComboBox<String>(window.getListeRegate().toArray(new String[0]));
 		}else{
 			cboSelRegate = new JComboBox<String>(window.getListeType().toArray(new String[0]));
 		}
