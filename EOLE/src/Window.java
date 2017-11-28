@@ -157,7 +157,7 @@ public class Window extends JFrame {
 	
 	public void classement() {
 		reinitContentPane();
-		Classement classement = new Classement(this);
+		Classement classement = new Classement(this, maBdd);
 		classement.createClassement();
 		classement.createPanelSelRegate("Général");
 		contentPane.revalidate();
@@ -165,7 +165,7 @@ public class Window extends JFrame {
 	
 	public void classementParCategorie(){
 		reinitContentPane();
-		Classement classement = new Classement(this);
+		Classement classement = new Classement(this, maBdd);
 		classement.createClassement();
 		classement.createPanelSelRegate("Par catégorie");
 		contentPane.revalidate();

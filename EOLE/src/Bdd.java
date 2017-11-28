@@ -261,4 +261,36 @@ public class Bdd {
 		
 	}
 	
+	public ArrayList<ArrayList<String>> getClassementRegate(int idRegate){
+		Connexion();
+		String sqlListeClassementRegate = "SELECT * FROM classement WHERE ID_REGATE = " + idRegate;
+		
+		try {
+			ArrayList<String> classementParticipant;
+			ArrayList<ArrayList<String>> classement = new ArrayList<ArrayList<String>>();
+			
+			rs = st.executeQuery(sqlListeClassementRegate);
+			
+			while (rs.next()){
+				classementParticipant= new ArrayList<String>();
+				classementParticipant.add(rs.getString(3));
+				classementParticipant.add(rs.getString(4));
+
+				classement.add(classementParticipant);
+			}
+			
+			deconnexion();
+			return classement;
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		deconnexion();
+		return null;
+		
+		
+		
+		
+	}
+	
 }
