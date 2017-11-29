@@ -122,15 +122,17 @@ public class Classement extends JFrame {
 	
 	
 	public void ajoutClassement(){
+		
+
 		lesParticipants = new ArrayList<Participant>();
 		lesParticipants = maBdd.getParticipantRegate(maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex()).getIdRegate());
 		
-		leClassement = new ArrayList<Participant>();
+		leClassement = new ArrayList<ArrayList<String>>();
 		leClassement = maBdd.getClassementRegate(maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex()).getIdRegate());
 		
 		for (int i=0; i < lesParticipants.size(); i++) {
-			tableClassement.setValueAt(lesParticipants.get(i).get(1), i, 1);
-			tableClassement.setValueAt(lesParticipants.get(i).get(2), i, 2);
+			tableClassement.setValueAt(lesParticipants.get(i).getNom(), i, 1);
+			tableClassement.setValueAt(lesParticipants.get(i).getPrenom(), i, 2);
 			
 			tableClassement.setValueAt(leClassement.get(i).get(1), i, 3);
 			if (Integer.parseInt(leClassement.get(i).get(2)) == -1){

@@ -35,7 +35,7 @@ public class AjoutRegate extends JFrame
 	private JScrollPane scrollPane;
 	private JTable tableParticipants;
 	private JComboBox<String> cboSelParticipant;
-	private ArrayList<ArrayList<String>> listeParticipantRegate= new ArrayList<ArrayList<String>>();
+	private ArrayList<Participant> listeParticipantRegate= new ArrayList<Participant>();
 
 	public AjoutRegate(Window window, Bdd maBdd) 
 	{
@@ -126,7 +126,7 @@ public class AjoutRegate extends JFrame
 		
 		for (int i=0; i<maBdd.getParticipant().size(); i++)
 		{
-			listeCombo.add((String)maBdd.getParticipant().get(i).get(1) + " " + (String)maBdd.getParticipant().get(i).get(2) + ", " + (String)maBdd.getParticipant().get(i).get(3));
+			listeCombo.add(maBdd.getParticipant().get(i).getNom() + " " + maBdd.getParticipant().get(i).getPrenom() + ", " + maBdd.getParticipant().get(i).getnomVoilier());
 		}
 		
 		this.cboSelParticipant = new JComboBox<String>(listeCombo.toArray(new String[0]));
@@ -210,7 +210,7 @@ public class AjoutRegate extends JFrame
 	
 	public void ajoutParticipantTable()
 	{
-		ArrayList<String> list = new ArrayList<String>();
+		Participant list;
 		
 		if (tableParticipants.getValueAt(19, 0) == null) 
 		{
@@ -222,13 +222,13 @@ public class AjoutRegate extends JFrame
 					pos += 1;
 				}
 			}
-					list = maBdd.getParticipant().get(cboSelParticipant.getSelectedIndex());
-					listeParticipantRegate.add(list);
-					tableParticipants.setValueAt(list.get(1), pos, 0);
-					tableParticipants.setValueAt(list.get(2), pos, 1);
-					tableParticipants.setValueAt(list.get(3), pos, 2);
-					tableParticipants.setValueAt(list.get(4), pos, 3);
-					tableParticipants.setValueAt(list.get(5), pos, 4);
+				list = maBdd.getParticipant().get(cboSelParticipant.getSelectedIndex());
+				listeParticipantRegate.add(list);
+				tableParticipants.setValueAt(list.getNom(), pos, 0);
+				tableParticipants.setValueAt(list.getPrenom(), pos, 1);
+				tableParticipants.setValueAt(list.getnomVoilier(), pos, 2);
+				tableParticipants.setValueAt(list.getCatégorieVoilier(), pos, 3);
+				tableParticipants.setValueAt(list.getTempsRealisé(), pos, 4);
 		}
 	}
 	

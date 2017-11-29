@@ -35,7 +35,7 @@ public class LancementRegate extends JFrame
 	private Window window;
 	private JButton btnFin, btnReinit, btnDepart, btnSelectionner;
 	private JScrollPane scrollPane;
-	private ArrayList<ArrayList<String>> lesParticipants;
+	private ArrayList<Participant> lesParticipants;
 	private SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
 	private Bdd maBdd;
 	
@@ -295,12 +295,12 @@ public class LancementRegate extends JFrame
 	
 	public void ajoutParticipantsTableau() 
 	{
-		lesParticipants = new ArrayList<ArrayList<String>>();
+		lesParticipants = new ArrayList<Participant>();
 		lesParticipants = maBdd.getParticipantRegate(maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex()).getIdRegate());
 		for (int i=0; i < lesParticipants.size(); i++) 
 		{
-			tableParticipants.setValueAt(lesParticipants.get(i).get(2) + " " + lesParticipants.get(i).get(1), i, 0);
-			tableParticipants.setValueAt(lesParticipants.get(i).get(3), i, 1);
+			tableParticipants.setValueAt(lesParticipants.get(i).getNom() + " " + lesParticipants.get(i).getPrenom(), i, 0);
+			tableParticipants.setValueAt(lesParticipants.get(i).getnomVoilier(), i, 1);
 		}
 	}
 	
@@ -308,7 +308,7 @@ public class LancementRegate extends JFrame
 	{
 		for (int i=0; i<lesParticipants.size(); i++) 
 		{
-		maBdd.sqlUpdateClassement(cboSelRegate.getSelectedIndex(), Integer.parseInt(lesParticipants.get(i).get(0)), 1, (String)tableParticipants.getValueAt(i, 4),(String)tableParticipants.getValueAt(i, 4));
+		maBdd.sqlUpdateClassement(cboSelRegate.getSelectedIndex(), lesParticipants.get(i).getIdParticipant(), 1, (String)tableParticipants.getValueAt(i, 4),(String)tableParticipants.getValueAt(i, 4));
 		}
 		
 	}

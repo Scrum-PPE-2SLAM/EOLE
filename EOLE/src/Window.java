@@ -21,7 +21,7 @@ public class Window extends JFrame {
 	private ArrayList<ArrayList> listeParticipant;
 	private Bdd maBdd;
 
-	public Window(String name, int height, int length, ArrayList<String> listeRegate, ArrayList<ArrayList> listeParticipant, ArrayList<String> listeType, Bdd maBdd ) {
+	public Window(String name, int height, int length, ArrayList<String> listeRegate, ArrayList<Participant> listeParticipant, ArrayList<String> listeType, Bdd maBdd ) {
 		this.name = name;
 		this.height = height;
 		this.length = length;

@@ -155,7 +155,7 @@ public class Bdd {
 		deconnexion();
 	}
 	
-	public void reqAjoutRegate(String nomRegate, String dateRegate, String lieuDepart, String lieuArrive, int distance, ArrayList<ArrayList<String>> participantsRegate) throws SQLException{
+	public void reqAjoutRegate(String nomRegate, String dateRegate, String lieuDepart, String lieuArrive, int distance, ArrayList<Participant> participantsRegate) throws SQLException{
 		
 		Connexion();
 		 
@@ -172,8 +172,7 @@ public class Bdd {
 		     prepare.executeUpdate();
 		     System.out.println(participantsRegate.size());
 		     for (int i=0; i < participantsRegate.size(); i++) {
-		    	 System.out.println(Integer.parseInt(participantsRegate.get(i).get(0)+"") + 20);
-		    	 reqAjoutParticipantReg(Integer.parseInt((String)participantsRegate.get(i).get(0)), id);
+		    	 reqAjoutParticipantReg(participantsRegate.get(i).getIdParticipant(), id);
 		     }
 		     
 		     System.out.println("requête envoye correctement");
