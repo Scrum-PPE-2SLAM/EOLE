@@ -3,8 +3,10 @@ import java.awt.Font;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -153,6 +155,7 @@ public class LancementRegate extends JFrame
 			public void actionPerformed(ActionEvent e) 
 			{
 				chrono.stopDTimer();
+				sauvegardeClassement();
 			}
 		});
 		
@@ -263,9 +266,9 @@ public class LancementRegate extends JFrame
 	public void setTime(boolean arrivee) 
 	{
 		int ligne = tableParticipants.getSelectedRow();
-			if ((chrono.isRunning()) && (tableParticipants.getValueAt(ligne, 4) == null)) 
+			if ((chrono.isRunning()) && (tableParticipants.getValueAt(ligne, 4) == null) && tableParticipants.getValueAt(ligne, 0) != null) 
 			{
-				if (arrivee == true) 
+				if (arrivee) 
 				{
 					tableParticipants.setValueAt(df.format(chrono.getTime() - 3.6 * Math.pow(10,6)), ligne, 4);
 				}else 
@@ -299,5 +302,19 @@ public class LancementRegate extends JFrame
 			tableParticipants.setValueAt(lesParticipants.get(i).get(2) + " " + lesParticipants.get(i).get(1), i, 0);
 			tableParticipants.setValueAt(lesParticipants.get(i).get(3), i, 1);
 		}
+	}
+	
+	public void sauvegardeClassement() 
+	{
+		for (int i=0; i<lesParticipants.size(); i++) 
+		{
+		maBdd.sqlUpdateClassement(cboSelRegate.getSelectedIndex(), Integer.parseInt(lesParticipants.get(i).get(0)), 1, (String)tableParticipants.getValueAt(i, 4),(String)tableParticipants.getValueAt(i, 4));
+		}
+		
+	}
+	
+	public String calculTempsCompense(String temps) {
+		
+		return "";
 	}
 }

@@ -25,7 +25,8 @@ public class Classement extends JFrame {
 	private JComboBox<String> cboSelRegate;
 	private Bdd maBdd;
 	private JButton btnSelectionner;
-	private ArrayList<ArrayList<String>> lesParticipants, leClassement;
+	private ArrayList<Participant> lesParticipants; 
+	private ArrayList<ArrayList<String>> leClassement;
 	
 	public Classement(Window window, Bdd maBdd){
 		
@@ -121,23 +122,23 @@ public class Classement extends JFrame {
 	
 	
 	public void ajoutClassement(){
-		lesParticipants = new ArrayList<ArrayList<String>>();
+		lesParticipants = new ArrayList<Participant>();
 		lesParticipants = maBdd.getParticipantRegate(maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex()).getIdRegate());
 		
-		leClassement = new ArrayList<ArrayList<String>>();
+		leClassement = new ArrayList<Participant>();
 		leClassement = maBdd.getClassementRegate(maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex()).getIdRegate());
 		
 		for (int i=0; i < lesParticipants.size(); i++) {
 			tableClassement.setValueAt(lesParticipants.get(i).get(1), i, 1);
 			tableClassement.setValueAt(lesParticipants.get(i).get(2), i, 2);
 			
-			tableClassement.setValueAt(leClassement.get(i).get(0), i, 3);
-			if (Integer.parseInt(leClassement.get(i).get(1)) == -1){
+			tableClassement.setValueAt(leClassement.get(i).get(1), i, 3);
+			if (Integer.parseInt(leClassement.get(i).get(2)) == -1){
 				tableClassement.setValueAt("Non classé", i, 0);
-			}else if (Integer.parseInt(leClassement.get(i).get(1)) == 0){
+			}else if (Integer.parseInt(leClassement.get(i).get(2)) == 0){
 				tableClassement.setValueAt("abandon", i, 0);
 			}else{
-				tableClassement.setValueAt(leClassement.get(i).get(1), i, 0);
+				tableClassement.setValueAt(leClassement.get(i).get(2), i, 0);
 			}
 		}
 		

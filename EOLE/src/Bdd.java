@@ -7,7 +7,7 @@ import java.sql.*;
 
 
 public class Bdd {
-	ArrayList<ArrayList> listeParticipant = new ArrayList<ArrayList>();
+	ArrayList<Participant> listeParticipant = new ArrayList<Participant>();
 	ArrayList infoParticipant;
 	ArrayList<Regate> listeRegate = new ArrayList<Regate>();
 	ArrayList<String> listeType= new ArrayList<String>();
@@ -39,7 +39,6 @@ public class Bdd {
 			System.out.println("connexion établie");
 			st = con.createStatement();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -47,17 +46,11 @@ public class Bdd {
 	public void initialisation() throws SQLException{
 		String sql = "SELECT * FROM participant";
 		rs = st.executeQuery(sql);
-		listeParticipant = new ArrayList<ArrayList>();
+		listeParticipant = new ArrayList<Participant>();
 		while (rs.next()){
-			infoParticipant = new ArrayList();
-			infoParticipant.add(rs.getString(1));
-			infoParticipant.add(rs.getString(2));
-			infoParticipant.add(rs.getString(3));
-			infoParticipant.add(rs.getString(4));
-			infoParticipant.add(rs.getString(5));
-			infoParticipant.add(rs.getString(6));
+			Participant Participant = new Participant(Integer.parseInt(rs.getString(1)), rs.getString(2), rs.getString(3), rs.getString(4), Integer.parseInt(rs.getString(5)), Integer.parseInt(rs.getString(6)));
 			
-			listeParticipant.add(infoParticipant);
+			listeParticipant.add(Participant);
 		}
 		
 		
@@ -96,15 +89,10 @@ public class Bdd {
 			
 			while(rs.next()){
 				
-				infoParticipant = new ArrayList();
-				infoParticipant.add(rs.getString(1));
-				infoParticipant.add(rs.getString(2));
-				infoParticipant.add(rs.getString(3));
-				infoParticipant.add(rs.getString(4));
-				infoParticipant.add(rs.getString(5));
-				infoParticipant.add(rs.getString(6));
+				Participant Participant = new Participant(Integer.parseInt(rs.getString(1)), rs.getString(2), rs.getString(3), rs.getString(4), Integer.parseInt(rs.getString(5)), Integer.parseInt(rs.getString(6)));
 				
-				listeParticipant.add(infoParticipant);
+				listeParticipant.add(Participant);
+				
 			}
 			
 			String sql2 = "SELECT * FROM regate";
@@ -222,7 +210,7 @@ public class Bdd {
 		return listeType;
 	}
 	
-	public ArrayList<ArrayList> getParticipant(){
+	public ArrayList<Participant> getParticipant(){
 		return listeParticipant;
 	}
 	
@@ -233,21 +221,16 @@ public class Bdd {
 		return listeNomRegate;
 	}
 
-	public ArrayList<ArrayList<String>> getParticipantRegate(int idRegate) {
+	public ArrayList<Participant> getParticipantRegate(int idRegate) {
 		Connexion();
 		String sqlListeParticipantRegate = "SELECT * FROM participant WHERE ID_PARTICIPANT IN (SELECT ID_PARTICIPANT FROM classement WHERE ID_REGATE = " + idRegate + ")";
 		try {
-			ArrayList<String> unParticipant;
-			ArrayList<ArrayList<String>> participantCetteRegate = new ArrayList<ArrayList<String>>();
+			ArrayList<Participant> participantCetteRegate = new ArrayList<Participant>();
 			rs = st.executeQuery(sqlListeParticipantRegate);
 			
 			while (rs.next()) {
-				unParticipant = new ArrayList<String>();
-				unParticipant.add(rs.getString(1));
-				unParticipant.add(rs.getString(2));
-				unParticipant.add(rs.getString(3));
-				unParticipant.add(rs.getString(4));
-				unParticipant.add(rs.getString(5));
+				Participant unParticipant = new Participant(Integer.parseInt(rs.getString(1)), rs.getString(2), rs.getString(3), rs.getString(4), Integer.parseInt(rs.getString(5)), Integer.parseInt(rs.getString(6)));
+				
 				
 				participantCetteRegate.add(unParticipant);
 			}
@@ -266,13 +249,14 @@ public class Bdd {
 		String sqlListeClassementRegate = "SELECT * FROM classement WHERE ID_REGATE = " + idRegate;
 		
 		try {
-			ArrayList<String> classementParticipant;
+			ArrayList<String> classementParticipant = new ArrayList<String>();
 			ArrayList<ArrayList<String>> classement = new ArrayList<ArrayList<String>>();
 			
 			rs = st.executeQuery(sqlListeClassementRegate);
 			
 			while (rs.next()){
 				classementParticipant= new ArrayList<String>();
+				classementParticipant.add(rs.getString(1));
 				classementParticipant.add(rs.getString(3));
 				classementParticipant.add(rs.getString(4));
 
@@ -287,10 +271,26 @@ public class Bdd {
 		}
 		deconnexion();
 		return null;
-		
-		
-		
-		
+	}
+	
+	public void sqlUpdateClassement(int idRegate, int idParticipant, int position, String temps, String tempsCompens) {
+		try  
+		{
+			Connexion();
+			PreparedStatement prepare = con.prepareStatement("UPDATE classement SET TEMPS_REEL =  ?,TEMPS_COMPENSE = ?, POSITION = ? WHERE ID_PARTICIPANT = ? AND ID_REGATE = ? ");
+
+
+		    prepare.setString(1,temps);
+		    prepare.setString(1,tempsCompens);
+		    prepare.setInt(3,position);
+		    prepare.setInt(4,idParticipant);
+		    prepare.setInt(5,idRegate);
+		    
+		    prepare.executeUpdate();
+		    deconnexion();
+		 } catch (SQLException e) {
+				System.out.println(e);
+		 }
 	}
 	
 }
