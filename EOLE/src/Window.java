@@ -18,7 +18,7 @@ public class Window extends JFrame {
 	private JPanel contentPane;
 	private ArrayList<String> listeRegate;
 	private ArrayList<String> listeType;
-	private ArrayList<ArrayList> listeParticipant;
+	private ArrayList<ArrayList<Participant>> listeParticipant;
 	private Bdd maBdd;
 
 	public Window(String name, int height, int length, ArrayList<String> listeRegate, ArrayList<Participant> listeParticipant, ArrayList<String> listeType, Bdd maBdd ) {
@@ -185,7 +185,7 @@ public class Window extends JFrame {
 	public ArrayList<String> getListeType(){
 		return listeType;
 	}
-	public ArrayList<ArrayList> getListeParticipant(){
+	public ArrayList<ArrayList<Participant>> getListeParticipant(){
 		return listeParticipant;
 	}
 	

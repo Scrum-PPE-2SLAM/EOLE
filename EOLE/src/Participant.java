@@ -1,11 +1,10 @@
-
 public class Participant 
 {
-	private int idParticipant, tempsRealisé, catégorieVoilier, rating, position;
+	private int idParticipant, tempsRealisé, catégorieVoilier, rating;
 	private String nom, prenom, nomVoilier;
 	
 	
-	public Participant(int idParticipant,  String nom, String prenom, String nomVoilier, int catégorieVoilier, int rating ) 
+	public Participant(int idParticipant,  String nom, String prenom, String nomVoilier, int catégorieVoilier, int rating) 
 	{
 		this.idParticipant = idParticipant;
 		this.catégorieVoilier = catégorieVoilier;
@@ -46,11 +45,4 @@ public class Participant
 	public int getRating() {
 		return rating;
 	}
-	
-	public void setPosition(int pos) {
-		this.position=pos;
-	}
-	
-	
-	
 }

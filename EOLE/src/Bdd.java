@@ -1,14 +1,11 @@
 import java.util.ArrayList;
-
 import javax.swing.JOptionPane;
-
-import java.awt.List;
 import java.sql.*;
 
 
 public class Bdd {
 	ArrayList<Participant> listeParticipant = new ArrayList<Participant>();
-	ArrayList infoParticipant;
+	ArrayList<Participant> infoParticipant;
 	ArrayList<Regate> listeRegate = new ArrayList<Regate>();
 	ArrayList<String> listeType= new ArrayList<String>();
 	ArrayList<String> listeDateRegate= new ArrayList<String>();
@@ -22,7 +19,6 @@ public class Bdd {
 	private static Connection con;
 	private static Statement st;
 	private static ResultSet rs;
-	private static int res;
 	
 	
 	
@@ -106,14 +102,13 @@ public class Bdd {
 			}
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		
 	}
 	
-	public void remove(ArrayList maListe){
+	public void remove(ArrayList<?> maListe){
 		while (maListe.size() > 0){
 			maListe.remove(0);
 		}
@@ -125,9 +120,9 @@ public class Bdd {
 			con.close();
 			st.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		System.out.println("connexion fermé");
 	}
 		
@@ -280,7 +275,7 @@ public class Bdd {
 
 
 		    prepare.setString(1,temps);
-		    prepare.setString(1,tempsCompens);
+		    prepare.setString(2,tempsCompens);
 		    prepare.setInt(3,position);
 		    prepare.setInt(4,idParticipant);
 		    prepare.setInt(5,idRegate);

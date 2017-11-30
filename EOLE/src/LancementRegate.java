@@ -5,8 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -305,9 +303,15 @@ public class LancementRegate extends JFrame
 	
 	public void sauvegardeClassement() 
 	{
+		int idRegate = cboSelRegate.getSelectedIndex();
+		
 		for (int i=0; i<lesParticipants.size(); i++) 
 		{
-		maBdd.sqlUpdateClassement(cboSelRegate.getSelectedIndex(), lesParticipants.get(i).getIdParticipant(), 1, (String)tableParticipants.getValueAt(i, 4),(String)tableParticipants.getValueAt(i, 4));
+		int idParticipant = lesParticipants.get(i).getIdParticipant();
+		String temps = (String)tableParticipants.getValueAt(i, 4);
+		String tempsCompense = (String)tableParticipants.getValueAt(i, 4);		
+		
+		maBdd.sqlUpdateClassement(idRegate, idParticipant, 1, temps,tempsCompense);
 		}
 		
 	}
