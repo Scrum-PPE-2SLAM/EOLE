@@ -228,7 +228,7 @@ public class AjoutRegate extends JFrame
 				tableParticipants.setValueAt(list.getPrenom(), pos, 1);
 				tableParticipants.setValueAt(list.getnomVoilier(), pos, 2);
 				tableParticipants.setValueAt(list.getCatégorieVoilier(), pos, 3);
-				tableParticipants.setValueAt(list.getTempsRealisé(), pos, 4);
+				tableParticipants.setValueAt(list.getRating(), pos, 4);
 		}
 	}
 	

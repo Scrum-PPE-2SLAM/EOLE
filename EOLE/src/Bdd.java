@@ -253,6 +253,7 @@ public class Bdd {
 				classementParticipant.add(rs.getString(1));
 				classementParticipant.add(rs.getString(3));
 				classementParticipant.add(rs.getString(4));
+				classementParticipant.add(rs.getString(5));
 
 				classement.add(classementParticipant);
 			}
@@ -266,6 +267,8 @@ public class Bdd {
 		deconnexion();
 		return null;
 	}
+	
+	
 	
 	public void sqlUpdateClassement(int idRegate, int idParticipant, int position, String temps, String tempsCompens) {
 		try  
@@ -286,5 +289,22 @@ public class Bdd {
 				System.out.println(e);
 		 }
 	}
-	
+
+	public void sqlUpdateClassement(int idRegate, int idParticipant, int position) {
+		try  
+		{
+			Connexion();
+			PreparedStatement prepare = con.prepareStatement("UPDATE classement SET POSITION = ? WHERE ID_PARTICIPANT = ? AND ID_REGATE = ? ");
+
+
+		    prepare.setInt(1,position);
+		    prepare.setInt(2,idParticipant);
+		    prepare.setInt(3,idRegate);
+		    
+		    prepare.executeUpdate();
+		    deconnexion();
+		 } catch (SQLException e) {
+				System.out.println(e);
+		 }
+	}
 }

@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -77,6 +78,7 @@ public class LancementRegate extends JFrame
 			{
 				chargerInfoRegate();
 				ajoutParticipantsTableau();
+				
 			}
 		});
 		
@@ -156,7 +158,7 @@ public class LancementRegate extends JFrame
 			public void actionPerformed(ActionEvent e) 
 			{
 				chrono.stopDTimer();
-				sauvegardeClassement();
+				sauvegardeClassement(-1);
 			}
 		});
 		
@@ -303,9 +305,10 @@ public class LancementRegate extends JFrame
 			tableParticipants.setValueAt(lesParticipants.get(i).getNom() + " " + lesParticipants.get(i).getPrenom(), i, 0);
 			tableParticipants.setValueAt(lesParticipants.get(i).getnomVoilier(), i, 1);
 		}
+		regateCourante = maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex());
 	}
 	
-	public void sauvegardeClassement() 
+	public void sauvegardeClassement(int pos) 
 	{
 		int idRegate = cboSelRegate.getSelectedIndex();
 		
@@ -316,9 +319,9 @@ public class LancementRegate extends JFrame
 		String temps = (String)tableParticipants.getValueAt(i, 4);
 		String tempsCompense = calculTempsCompense(temps, lesParticipants.get(i).getRating(), regateCourante.getDistance());	
 		
-		maBdd.sqlUpdateClassement(idRegate, idParticipant, 1, temps,tempsCompense);
+		maBdd.sqlUpdateClassement(idRegate, idParticipant, pos, temps,tempsCompense);
 		}
-		;
+		classementDesParticipants(idRegate);
 	}
 	
 	public String calculTempsCompense(String temps, int rating, int distance) 
@@ -331,8 +334,33 @@ public class LancementRegate extends JFrame
 			return df.format(tempsCompense);
 		} catch (ParseException e) {
 			e.printStackTrace();
-			
 		}
 		return null;
+	}
+	
+	public void classementDesParticipants(int idRegate) {
+		ArrayList<ArrayList<String>> listeParticipant = maBdd.getClassementRegate(idRegate);
+		System.out.println(listeParticipant.get(1).get(0));
+		for (int i = 0; i < listeParticipant.size(); i++) {
+			int pos = 0;
+			for (int j = i; j < listeParticipant.size(); j++) {
+				// personne n'a rien vu
+				try {
+					if ((long)((double) (df.parse(listeParticipant.get(i).get(3)).getTime()/1000)+3600) > (long)((double) (df.parse(listeParticipant.get(j).get(3))).getTime()/1000)+3600) {
+						ArrayList<String> temporaire = listeParticipant.get(i);
+						listeParticipant.set(i, listeParticipant.get(j));
+						listeParticipant.set(j, temporaire);
+						
+					}
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		for (int i = 0; i < listeParticipant.size(); i++) {
+			maBdd.sqlUpdateClassement(idRegate, Integer.parseInt(listeParticipant.get(i).get(0)), i+1);
+
+		}
+		System.out.println(listeParticipant.get(1).get(0));
 	}
 }
