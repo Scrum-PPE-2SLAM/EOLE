@@ -3,8 +3,11 @@ import java.awt.Font;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -35,6 +38,7 @@ public class LancementRegate extends JFrame
 	private ArrayList<Participant> lesParticipants;
 	private SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
 	private Bdd maBdd;
+	private Regate regateCourante;
 	
 
 	public LancementRegate(Window window, Bdd maBdd) 
@@ -305,19 +309,30 @@ public class LancementRegate extends JFrame
 	{
 		int idRegate = cboSelRegate.getSelectedIndex();
 		
+		
 		for (int i=0; i<lesParticipants.size(); i++) 
 		{
 		int idParticipant = lesParticipants.get(i).getIdParticipant();
 		String temps = (String)tableParticipants.getValueAt(i, 4);
-		String tempsCompense = (String)tableParticipants.getValueAt(i, 4);		
+		String tempsCompense = calculTempsCompense(temps, lesParticipants.get(i).getRating(), regateCourante.getDistance());	
 		
 		maBdd.sqlUpdateClassement(idRegate, idParticipant, 1, temps,tempsCompense);
 		}
-		
+		;
 	}
 	
-	public String calculTempsCompense(String temps) {
-		
-		return "";
+	public String calculTempsCompense(String temps, int rating, int distance) 
+	{
+		long secondes, secondesCompense;
+		try {
+			secondes = (long)((double) (df.parse(temps).getTime()/1000)+3600);
+			secondesCompense = (long) (secondes + (5143 / (Math.sqrt(rating)+3.5)*distance));
+			Date tempsCompense = new Date(secondesCompense*1000 - (long)(3.6 * Math.pow(10,6)));
+			return df.format(tempsCompense);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			
+		}
+		return null;
 	}
 }
