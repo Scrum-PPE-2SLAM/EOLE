@@ -132,25 +132,25 @@ public class Classement extends JFrame {
 		
 		for (int i=0; i < lesParticipants.size(); i++) {
 			for (int j=0; j < lesParticipants.size(); j++) {
-				System.out.println(Integer.parseInt(leClassement.get(j).get(2)));
 				if (Integer.parseInt(leClassement.get(j).get(2)) == i+1) {
-					;
 					tableClassement.setValueAt(lesParticipants.get(j).getNom(), i, 1);
 					tableClassement.setValueAt(lesParticipants.get(j).getPrenom(), i, 2);
 					
 					tableClassement.setValueAt(leClassement.get(j).get(1), i, 3);
 					tableClassement.setValueAt(leClassement.get(j).get(3), i, 4);
+					
+					if (Integer.parseInt(leClassement.get(j).get(2)) == -1){
+						tableClassement.setValueAt("Non classé", i, 0);
+					}else if (Integer.parseInt(leClassement.get(j).get(2)) == 0){
+						tableClassement.setValueAt("abandon", i, 0);
+					}else{
+						tableClassement.setValueAt(leClassement.get(j).get(2), i, 0);
+					}
+				}
 				}
 			}
 
-			if (Integer.parseInt(leClassement.get(i).get(2)) == -1){
-				tableClassement.setValueAt("Non classé", i, 0);
-			}else if (Integer.parseInt(leClassement.get(i).get(2)) == 0){
-				tableClassement.setValueAt("abandon", i, 0);
-			}else{
-				tableClassement.setValueAt(leClassement.get(i).get(2), i, 0);
-			}
-		}
+
 		
 	}
 }
