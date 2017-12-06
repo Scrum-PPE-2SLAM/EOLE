@@ -4,15 +4,16 @@ import java.sql.*;
 
 
 public class Bdd {
-	ArrayList<Participant> listeParticipant = new ArrayList<Participant>();
-	ArrayList<Participant> infoParticipant;
-	ArrayList<Regate> listeRegate = new ArrayList<Regate>();
-	ArrayList<String> listeType= new ArrayList<String>();
-	ArrayList<String> listeDateRegate= new ArrayList<String>();
-	ArrayList<String> listeLieuDepart= new ArrayList<String>();
-	ArrayList<String> listeLieuArrivee= new ArrayList<String>();
-	ArrayList<Integer> listeDistance= new ArrayList<Integer>();
+	private ArrayList<Participant> listeParticipant = new ArrayList<Participant>();
+	private ArrayList<Regate> listeRegate = new ArrayList<Regate>();
+	private ArrayList<Regate> listeInverseRegate = new ArrayList<Regate>();
+	private ArrayList<String> listeType= new ArrayList<String>();
+	private ArrayList<String> listeDateRegate= new ArrayList<String>();
+	private ArrayList<String> listeLieuDepart= new ArrayList<String>();
+	private ArrayList<String> listeLieuArrivee= new ArrayList<String>();
+	private ArrayList<Integer> listeDistance= new ArrayList<Integer>();
 	private ArrayList<String> listeNomRegate = new ArrayList<String>();
+	private ArrayList<String> listeNomRegateInverse = new ArrayList<String>();
 	private static String url ="jdbc:mysql://localhost:3306/eole";
 	private static String user ="root";
 	private static String password = "";
@@ -20,12 +21,8 @@ public class Bdd {
 	private static Statement st;
 	private static ResultSet rs;
 	
-	
-	
-	
 	public Bdd() throws SQLException{
 		Connexion();
-		
 	}
 
 	public void Connexion(){
@@ -48,18 +45,20 @@ public class Bdd {
 			
 			listeParticipant.add(Participant);
 		}
-		
-		
-		
 		String sql2 = "SELECT * FROM regate";
 		rs = st.executeQuery(sql2);
 		listeRegate = new ArrayList<Regate>();
 		
 		while (rs.next()){
-			Regate regate = new Regate(rs.getInt(1),rs.getInt(6),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5));
+			Regate regate = new Regate(rs.getInt(1),rs.getInt(6),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5), rs.getInt(7));
 			listeRegate.add(regate);
 			listeNomRegate.add(rs.getString(2));
 		}
+		for (int i = listeRegate.size()-1; i>=0; i--) {
+			listeInverseRegate.add(listeRegate.get(i));
+			listeNomRegateInverse.add(listeRegate.get(i).getNomRegate());
+		}
+	
 		deconnexion();
 		System.out.println("regates : " + listeRegate.size() + "; participants : " + listeParticipant.size());
 		
@@ -69,16 +68,15 @@ public class Bdd {
 	public void miseAJour(){
 		
 		try {
-			
-			
-			
-			/////// fonction remove
 			remove(listeParticipant);
 			remove(listeRegate);
 			remove(listeDateRegate);
 			remove(listeLieuDepart);
 			remove(listeLieuArrivee);
 			remove(listeDistance);
+			remove(listeNomRegate);
+			remove(listeInverseRegate);
+			remove(listeNomRegateInverse);
 			
 			String sql = "SELECT * FROM participant";
 			rs = st.executeQuery(sql);
@@ -96,9 +94,13 @@ public class Bdd {
 			
 			while (rs.next()){
 				
-				Regate regate = new Regate(rs.getInt(1),rs.getInt(6),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5));
+				Regate regate = new Regate(rs.getInt(1),rs.getInt(6),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5), rs.getInt(7));
 				listeRegate.add(regate);
 				listeNomRegate.add(rs.getString(2));
+			}
+			for (int i = listeRegate.size()-1; i>=0; i--) {
+				listeInverseRegate.add(listeRegate.get(i));
+				listeNomRegateInverse.add(listeRegate.get(i).getNomRegate());
 			}
 			
 		} catch (SQLException e) {
@@ -197,7 +199,7 @@ public class Bdd {
 	}
 	
 	public ArrayList<Regate> getlisteRegate(){
-		return listeRegate;
+		return listeInverseRegate;
 	}
 	
 	public ArrayList<String> getListeType(){
@@ -208,11 +210,8 @@ public class Bdd {
 		return listeParticipant;
 	}
 	
-	
-
-	
 	public ArrayList<String> getListeNomRegate() {
-		return listeNomRegate;
+		return listeNomRegateInverse;
 	}
 
 	public ArrayList<Participant> getParticipantRegate(int idRegate) {
@@ -306,5 +305,21 @@ public class Bdd {
 		 } catch (SQLException e) {
 				System.out.println(e);
 		 }
+	}
+	
+	public void sqlUpdateRegate(int idRegate, int etat) {
+		try {
+		Connexion();
+		PreparedStatement prepare = con.prepareStatement("UPDATE regate SET ETAT_LANCEMENT = ? WHERE ID_REGATE = ?");
+
+
+	    prepare.setInt(1,etat);
+	    prepare.setInt(2,idRegate);
+	    
+	    prepare.executeUpdate();
+	    deconnexion();
+	 } catch (SQLException e) {
+			System.out.println(e);
+	 }
 	}
 }

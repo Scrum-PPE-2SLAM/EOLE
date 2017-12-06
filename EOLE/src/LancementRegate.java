@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -67,7 +66,11 @@ public class LancementRegate extends JFrame
 		this.lblSelRegate.setBounds(190, 14, 220, 14);
 		this.panelSelRegate.add(lblSelRegate);
 		
-		this.cboSelRegate = new JComboBox<String>(maBdd.getListeNomRegate().toArray(new String[0]));
+		this.cboSelRegate = new JComboBox<String>();
+		for (int i=0; i<maBdd.getlisteRegate().size(); i++) {
+			//if (maBdd.getlisteRegate().get(i).getEtat() == 0)
+				cboSelRegate.addItem(maBdd.getlisteRegate().get(i).getNomRegate());
+		}
 		this.cboSelRegate.setBounds(383, 11, 161, 20);
 		this.panelSelRegate.add(cboSelRegate);
 		
@@ -76,8 +79,19 @@ public class LancementRegate extends JFrame
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				chargerInfoRegate();
-				ajoutParticipantsTableau();
+				if (chrono.isRunning() || tableParticipants.getValueAt(0, 4) != null) {
+					JOptionPane.showMessageDialog(null, "Une régate est en cours. Impossible d'en selectionner une autre.", "Erreur", JOptionPane.ERROR_MESSAGE);
+				}else {
+					for (int i = 0; i<20; i++) {
+						tableParticipants.setValueAt(null, i, 0);
+						tableParticipants.setValueAt(null, i, 1);
+						tableParticipants.setValueAt(null, i, 4);
+					}
+					regateCourante = maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex());
+					chargerInfoRegate();
+					ajoutParticipantsTableau();
+					window.repaint();
+				}
 				
 			}
 		});
@@ -157,8 +171,25 @@ public class LancementRegate extends JFrame
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				chrono.stopDTimer();
-				sauvegardeClassement(-1);
+				boolean dejaPose = false;
+				if (chrono.isRunning()) {
+					for (int i=0; i<lesParticipants.size(); i++) {
+						if (tableParticipants.getValueAt(i, 4) == null) {
+							if (dejaPose == false) {
+								int option = JOptionPane.showConfirmDialog(null, "Des participants ne sont pas enregistrés comme arriver. Les déclarer en abandon?", "Reinitialisation chronomètre", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+								dejaPose = true;
+								if(option != JOptionPane.OK_OPTION){
+									break;
+								}
+							}
+							tableParticipants.setValueAt("Abandon", i, 4);
+						}
+					}
+					chrono.stopDTimer();
+					sauvegardeClassement(-1);
+				}else {
+					JOptionPane.showMessageDialog(null, "le chronomètre ne tourne pas!", "Erreur", JOptionPane.ERROR_MESSAGE);	
+				}
 			}
 		});
 		
@@ -171,8 +202,16 @@ public class LancementRegate extends JFrame
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				chrono.reinitDTimer();
-				lblChrono.setText("00:00:00");
+				if (chrono.isRunning()) {
+					JOptionPane.showMessageDialog(null, "le chronomètre tourne! impossible de le réinitialiser.", "Erreur", JOptionPane.ERROR_MESSAGE);
+				}else {
+					int option = JOptionPane.showConfirmDialog(null, "Etes-vous sur de vouloir réinitialiser le chronomètre?", "Reinitialisation chronomètre", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+								
+					if(option == JOptionPane.OK_OPTION){
+						chrono.reinitDTimer();
+						lblChrono.setText("00:00:00");
+					}
+				}
 			}
 		});
 		
@@ -192,7 +231,14 @@ public class LancementRegate extends JFrame
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				chrono.startDTimer();
+				System.out.println(lblChrono.getText());
+				if (tableParticipants.getValueAt(0, 0) != null && lblChrono.getText() == "00:00:00") {
+					chrono.startDTimer();
+				}else if (lblChrono.getText() != "00:00:00") {
+					JOptionPane.showMessageDialog(null, "le chronomètre n'est pas à 0. Veuillez le réinitialiser.", "Erreur", JOptionPane.ERROR_MESSAGE);
+				}else {
+					JOptionPane.showMessageDialog(null, "Aucune régate n'est selectionné ou aucun participant n'est renseigné.", "Erreur", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		
@@ -276,7 +322,7 @@ public class LancementRegate extends JFrame
 					tableParticipants.setValueAt(df.format(chrono.getTime() - 3.6 * Math.pow(10,6)), ligne, 4);
 				}else 
 				{
-					tableParticipants.setValueAt("NC", ligne, 4);
+					tableParticipants.setValueAt("Abandon", ligne, 4);
 				}
 				}else if  (tableParticipants.getValueAt(ligne, 4) != null)
 				{
@@ -299,11 +345,13 @@ public class LancementRegate extends JFrame
 	public void ajoutParticipantsTableau() 
 	{
 		lesParticipants = new ArrayList<Participant>();
-		lesParticipants = maBdd.getParticipantRegate(maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex()).getIdRegate());
+		lesParticipants = maBdd.getParticipantRegate(regateCourante.getIdRegate());
+		System.out.println(lesParticipants.size());
 		for (int i=0; i < lesParticipants.size(); i++) 
 		{
 			tableParticipants.setValueAt(lesParticipants.get(i).getNom() + " " + lesParticipants.get(i).getPrenom(), i, 0);
 			tableParticipants.setValueAt(lesParticipants.get(i).getnomVoilier(), i, 1);
+			
 		}
 		regateCourante = maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex());
 	}
@@ -315,11 +363,17 @@ public class LancementRegate extends JFrame
 		
 		for (int i=0; i<lesParticipants.size(); i++) 
 		{
-		int idParticipant = lesParticipants.get(i).getIdParticipant();
-		String temps = (String)tableParticipants.getValueAt(i, 4);
-		String tempsCompense = calculTempsCompense(temps, lesParticipants.get(i).getRating(), regateCourante.getDistance());	
-		
-		maBdd.sqlUpdateClassement(idRegate, idParticipant, pos, temps,tempsCompense);
+			int idParticipant = lesParticipants.get(i).getIdParticipant();
+			String temps = (String)tableParticipants.getValueAt(i, 4);
+			String tempsCompense;
+			if (temps == "Abandon") {
+				tempsCompense = "Abandon";
+				
+			}else {
+				tempsCompense = calculTempsCompense(temps, lesParticipants.get(i).getRating(), regateCourante.getDistance());	
+			}
+			maBdd.sqlUpdateClassement(idRegate, idParticipant, pos, temps,tempsCompense);
+			maBdd.sqlUpdateRegate(regateCourante.getIdRegate(), 1);
 		}
 		classementDesParticipants(idRegate);
 	}
@@ -328,10 +382,14 @@ public class LancementRegate extends JFrame
 	{
 		long secondes, secondesCompense;
 		try {
+			if (temps != "Abandon") {
 			secondes = (long)((double) (df.parse(temps).getTime()/1000)+3600);
 			secondesCompense = (long) (secondes + (5143 / (Math.sqrt(rating)+3.5)*distance));
 			Date tempsCompense = new Date(secondesCompense*1000 - (long)(3.6 * Math.pow(10,6)));
 			return df.format(tempsCompense);
+			}else {
+				return "Abandon";
+			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -340,26 +398,36 @@ public class LancementRegate extends JFrame
 	
 	public void classementDesParticipants(int idRegate) {
 		ArrayList<ArrayList<String>> listeParticipant = maBdd.getClassementRegate(idRegate);
-		System.out.println(listeParticipant.get(1).get(0));
 		for (int i = 0; i < listeParticipant.size(); i++) {
-			int pos = 0;
-			for (int j = i; j < listeParticipant.size(); j++) {
+			for (int j = 0; j < listeParticipant.size(); j++) {
 				// personne n'a rien vu
 				try {
-					if ((long)((double) (df.parse(listeParticipant.get(i).get(3)).getTime()/1000)+3600) > (long)((double) (df.parse(listeParticipant.get(j).get(3))).getTime()/1000)+3600) {
-						ArrayList<String> temporaire = listeParticipant.get(i);
-						listeParticipant.set(i, listeParticipant.get(j));
-						listeParticipant.set(j, temporaire);
-						
+					if (listeParticipant.get(j).get(3).equals("Abandon") || listeParticipant.get(i).get(3).equals("Abandon")) {
+							ArrayList<String> temporaire = listeParticipant.get(i);
+							listeParticipant.set(i, listeParticipant.get(j));
+							listeParticipant.set(j, temporaire);
+					}else {
+						System.out.println(listeParticipant.get(j).get(3));
+						if ((long)((double) (df.parse(listeParticipant.get(i).get(3)).getTime()/1000)+3600) < (long)((double) (df.parse(listeParticipant.get(j).get(3))).getTime()/1000)+3600) {
+							ArrayList<String> temporaire = listeParticipant.get(i);
+							listeParticipant.set(i, listeParticipant.get(j));
+							listeParticipant.set(j, temporaire);
+						}
 					}
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
+				
 			}
 		}
+		int nbrAbandon = 0;
 		for (int i = 0; i < listeParticipant.size(); i++) {
-			maBdd.sqlUpdateClassement(idRegate, Integer.parseInt(listeParticipant.get(i).get(0)), i+1);
-
+			if (listeParticipant.get(i).get(3).equals("Abandon")) {
+				maBdd.sqlUpdateClassement(idRegate, Integer.parseInt(listeParticipant.get(i).get(0)), 0);
+				nbrAbandon +=1;
+			}else {
+			maBdd.sqlUpdateClassement(idRegate, Integer.parseInt(listeParticipant.get(i).get(0)), i+1-nbrAbandon);
+		}
 		}
 		System.out.println(listeParticipant.get(1).get(0));
 	}

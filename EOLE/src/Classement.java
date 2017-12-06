@@ -79,7 +79,7 @@ public class Classement extends JFrame {
 
 			private static final long serialVersionUID = 1L;
 			boolean[] columnEditables = new boolean[] {
-				false, false, false, true, true
+				false, false, false, false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -111,7 +111,13 @@ public class Classement extends JFrame {
 			this.btnSelectionner = new JButton("Valider");
 			this.btnSelectionner.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					
+					for (int i=0; i<20; i++) {
+						tableClassement.setValueAt("",i,0);
+						tableClassement.setValueAt("",i,1);
+						tableClassement.setValueAt("",i,2);
+						tableClassement.setValueAt("",i,3);
+						tableClassement.setValueAt("",i,4);
+					}
 					ajoutClassement();
 				}
 			});
@@ -123,14 +129,12 @@ public class Classement extends JFrame {
 	
 	public void ajoutClassement(){
 		
-
+int pos = 0;
 		lesParticipants = new ArrayList<Participant>();
 		lesParticipants = maBdd.getParticipantRegate(maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex()).getIdRegate());
-		
 		leClassement = new ArrayList<ArrayList<String>>();
 		leClassement = maBdd.getClassementRegate(maBdd.getlisteRegate().get(cboSelRegate.getSelectedIndex()).getIdRegate());
-		
-		for (int i=0; i < lesParticipants.size(); i++) {
+		for (int i=0; i <= lesParticipants.size(); i++) {
 			for (int j=0; j < lesParticipants.size(); j++) {
 				if (Integer.parseInt(leClassement.get(j).get(2)) == i+1) {
 					tableClassement.setValueAt(lesParticipants.get(j).getNom(), i, 1);
@@ -138,20 +142,26 @@ public class Classement extends JFrame {
 					
 					tableClassement.setValueAt(leClassement.get(j).get(1), i, 3);
 					tableClassement.setValueAt(leClassement.get(j).get(3), i, 4);
-					
-					if (Integer.parseInt(leClassement.get(j).get(2)) == -1){
-						tableClassement.setValueAt("Non classé", i, 0);
-					}else if (Integer.parseInt(leClassement.get(j).get(2)) == 0){
-						tableClassement.setValueAt("abandon", i, 0);
-					}else{
-						tableClassement.setValueAt(leClassement.get(j).get(2), i, 0);
+						
+					tableClassement.setValueAt(leClassement.get(j).get(2), i, 0);
+					pos +=1;
 					}
 				}
-				}
 			}
-
-
 		
+		for (int i = 0; i< lesParticipants.size(); i++) {
+			if (Integer.parseInt(leClassement.get(i).get(2)) == 0) {
+				tableClassement.setValueAt(lesParticipants.get(i).getNom(), pos, 1);
+				tableClassement.setValueAt(lesParticipants.get(i).getPrenom(), pos, 2);
+				
+				tableClassement.setValueAt(leClassement.get(i).get(1), pos, 3);
+				tableClassement.setValueAt(leClassement.get(i).get(3), pos, 4);
+					
+				tableClassement.setValueAt("Abandon", pos, 0);
+				pos += 1;
+				
+			}
+		}
 	}
 }
 

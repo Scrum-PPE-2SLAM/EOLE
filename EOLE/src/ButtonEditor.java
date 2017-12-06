@@ -60,7 +60,7 @@ class ButtonEditor extends DefaultCellEditor
 			}
 		}
 		isPushed = false;
-		return new String(label);
+		return new String("✔");
 	}
 
 	public boolean stopCellEditing() 
